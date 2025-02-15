@@ -20,11 +20,12 @@ public class User implements Serializable {
     private String address_street;
     private String address_block;
     private Role role;
+    private String userCode;
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String phone, String password, String address_city, String address_street, String address_block) {
+    public User(Long id, String name, String email, String phone, String password, String address_city, String address_street, String address_block, Role role, String userCode) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -33,6 +34,8 @@ public class User implements Serializable {
         this.address_city = address_city;
         this.address_street = address_street;
         this.address_block = address_block;
+        this.role = role;
+        this.userCode = userCode;
     }
 
     public Long getId() {
@@ -97,6 +100,22 @@ public class User implements Serializable {
 
     public void setAddress_block(String address_block) {
         this.address_block = address_block;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     @Override

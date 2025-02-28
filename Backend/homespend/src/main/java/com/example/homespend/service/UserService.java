@@ -4,7 +4,6 @@ import com.example.homespend.exception.UserNotFoundException;
 import com.example.homespend.model.User;
 import com.example.homespend.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.example.homespend.model;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 
 @Entity
@@ -38,64 +37,64 @@ public class User implements Serializable {
         this.userCode = userCode;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAddress_city() {
-        return address_city;
-    }
-
-    public String getAddress_street() {
-        return address_street;
-    }
-
-    public String getAddress_block() {
-        return address_block;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAddress_city() {
+        return address_city;
     }
 
     public void setAddress_city(String address_city) {
         this.address_city = address_city;
     }
 
+    public String getAddress_street() {
+        return address_street;
+    }
+
     public void setAddress_street(String address_street) {
         this.address_street = address_street;
+    }
+
+    public String getAddress_block() {
+        return address_block;
     }
 
     public void setAddress_block(String address_block) {

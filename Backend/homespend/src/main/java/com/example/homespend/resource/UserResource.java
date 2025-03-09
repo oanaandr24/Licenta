@@ -3,6 +3,7 @@ package com.example.homespend.resource;
 import com.example.homespend.model.User;
 import com.example.homespend.service.UserService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class UserResource {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User> addUser(@RequestBody User user) throws NoSuchAlgorithmException {
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user) throws NoSuchAlgorithmException {
         user.setPassword(toHexString(getSHA(user.getPassword())));
         User newUser = userService.addUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);

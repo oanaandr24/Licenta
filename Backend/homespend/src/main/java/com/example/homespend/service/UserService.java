@@ -1,10 +1,13 @@
 package com.example.homespend.service;
 
 import com.example.homespend.exception.UserNotFoundException;
+import com.example.homespend.model.Role;
 import com.example.homespend.model.User;
 import com.example.homespend.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +21,13 @@ public class UserService {
     }
     public User addUser(User user) {
          user.setUserCode(UUID.randomUUID().toString());
-         return userRepo.save(user);
+        try {
+            Role aux = Role.valueOf(user.getRole());
+            return userRepo.save(user);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid enum value: " + user.getRole());
+        }
+
 
     }
     public List<User> findAllUsers() {

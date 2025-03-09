@@ -1,6 +1,8 @@
 package com.example.homespend.model;
 
 import jakarta.persistence.*;
+
+import jakarta.validation.constraints.Email;
 import java.io.Serializable;
 
 @Entity
@@ -11,6 +13,8 @@ public class User implements Serializable {
     private Long id;
     @Column(nullable = false)
     private String name;
+    @Email(message = "Invalid email format")
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
@@ -18,13 +22,13 @@ public class User implements Serializable {
     private String address_city;
     private String address_street;
     private String address_block;
-    private Role role;
+    private String role;
     private String userCode;
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String phone, String password, String address_city, String address_street, String address_block, Role role, String userCode) {
+    public User(Long id, String name, String email, String phone, String password, String address_city, String address_street, String address_block, String role, String userCode) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -101,11 +105,11 @@ public class User implements Serializable {
         this.address_block = address_block;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -128,6 +132,8 @@ public class User implements Serializable {
                 ", address_city='" + address_city + '\'' +
                 ", address_street='" + address_street + '\'' +
                 ", address_block='" + address_block + '\'' +
+                ", role='" + role + '\'' +
+                ", userCode='" + userCode + '\'' +
                 '}';
     }
 }

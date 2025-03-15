@@ -27,8 +27,9 @@ public class UserService {
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid enum value: " + user.getRole());
         }
-
-
+    }
+    public User findByEmail(String email) {
+        return userRepo.findUserByEmail(email);
     }
     public List<User> findAllUsers() {
          return userRepo.findAll();

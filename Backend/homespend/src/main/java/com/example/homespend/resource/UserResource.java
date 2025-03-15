@@ -55,7 +55,7 @@ public class UserResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping("/log-in")
+    /*@RequestMapping("/login")
     public ResponseEntity<User> login(@RequestBody User user) throws NoSuchAlgorithmException {
         List<User> users = userService.findAllUsers();
         for (User userLog : users) {
@@ -65,6 +65,25 @@ public class UserResource {
                 continue;
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+     */
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User loginRequest) throws NoSuchAlgorithmException {
+        // Caută user după email
+        User user = userService.findByEmail(loginRequest.getEmail());
+
+        if (user != null) {
+            // Verifică parola hashuită
+            String hashedPassword = toHexString(getSHA(loginRequest.getPassword()));
+            System.out.println("HashedPass:" + hashedPassword);
+            if (user.getPassword().equals(hashedPassword)) {
+                // ✅ Login reușit
+                return ResponseEntity.ok("Login reușit!");
+            }
+        }
+
+        // ❌ Email sau parolă greșite
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email sau parolă greșită!");
     }
 
     public static byte[] getSHA(String input) throws NoSuchAlgorithmException

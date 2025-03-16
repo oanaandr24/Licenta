@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -68,22 +69,30 @@ public class UserResource {
     }
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User loginRequest) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> login(@RequestBody User loginRequest) throws NoSuchAlgorithmException {
         // Caută user după email
         User user = userService.findByEmail(loginRequest.getEmail());
-
         if (user != null) {
             // Verifică parola hashuită
             String hashedPassword = toHexString(getSHA(loginRequest.getPassword()));
             System.out.println("HashedPass:" + hashedPassword);
             if (user.getPassword().equals(hashedPassword)) {
                 // ✅ Login reușit
-                return ResponseEntity.ok("Login reușit!");
+                return new ResponseEntity<>(HttpStatus.OK);
             }
         }
-
-        // ❌ Email sau parolă greșite
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email sau parolă greșită!");
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) throws NoSuchAlgorithmException {
+        // Verifici dacă email-ul este deja folosit
+        Optional<User> existingUser = Optional.ofNullable(userService.findByEmail(user.getEmail()));
+        if (existingUser.isPresent()) {
+            return new ResponseEntity<>(existingUser.get(), HttpStatus.CONFLICT);
+        }
+        user.setPassword(toHexString(getSHA(user.getPassword())));
+        userService.addUser(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     public static byte[] getSHA(String input) throws NoSuchAlgorithmException

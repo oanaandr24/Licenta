@@ -1,0 +1,55 @@
+<h2>Înregistrare</h2>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+  <div>
+    <label for="name">Nume:</label>
+    <input type="text" id="name" formControlName="name" placeholder="Introduceți numele complet" />
+  </div>
+
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" formControlName="email" placeholder="Introduceți email-ul" />
+  </div>
+
+  <div>
+    <label for="phone">Telefon:</label>
+    <input type="text" id="phone" formControlName="phone" placeholder="Introduceți numărul de telefon" />
+  </div>
+
+  <div>
+    <label for="password">Parolă:</label>
+    <input type="password" id="password" formControlName="password" placeholder="Introduceți parola" />
+  </div>
+
+  <div>
+    <label for="address_city">Oraș:</label>
+    <input type="text" id="address_city" formControlName="address_city" placeholder="Introduceți orașul" />
+  </div>
+
+  <div>
+    <label for="address_street">Stradă:</label>
+    <input type="text" id="address_street" formControlName="address_street" placeholder="Introduceți strada" />
+  </div>
+
+  <div>
+    <label for="address_block">Bloc:</label>
+    <input type="text" id="address_block" formControlName="address_block" placeholder="Introduceți blocul" />
+  </div>
+
+  <div>
+    <label for="role">Rol:</label>
+    <select id="role" formControlName="role">
+      <option value="" disabled selected>Alege rolul</option> <!-- Obligatoriu să aleagă -->
+      <option value="LOCATAR">Locatar</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+  </div>
+
+  <button type="submit" [disabled]="registerForm.invalid">Înregistrare</button>
+</form>
+
+<p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+<p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+
+<p>Ai deja cont? <a routerLink="/login">Autentifică-te aici</a></p>
+

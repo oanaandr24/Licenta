@@ -1,24 +1,21 @@
-<h2>Welcome to Homespend</h2>
+<div class="login-container">
+  <h2 class="title">Bun venit in Homespend</h2>
 
-<form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-  <div>
-    <label for="email">Email:</label>
-    <input type="email" id="email" formControlName="email" placeholder="Introduceti email-ul" />
-  </div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="login-form">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email" placeholder="Introduceti email-ul" class="form-control" />
+    </div>
 
-  <div>
-    <label for="password">Parola:</label>
-    <input type="password" id="password" formControlName="password" placeholder="Introduceti parola" />
-  </div>
+    <div class="form-group">
+      <label for="password">Parola:</label>
+      <input type="password" id="password" formControlName="password" placeholder="Introduceti parola" class="form-control" />
+    </div>
 
-  <button type="submit" [disabled]="loginForm.invalid">Autentificare</button>
-</form>
+    <button type="submit" [disabled]="loginForm.invalid" class="btn-submit">Autentificare</button>
+  </form>
 
-<!-- Afișează mesajul de eroare dacă există -->
-<p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
 
-<p>Nu ai cont? <a routerLink="/register">Înregistrează-te aici!</a></p>
-<button routerLink="/register" class="btn btn-secondary">Creează cont</button>
-
-
-  
+  <p class="register-link">Nu ai cont? <a routerLink="/register" class="link">Înregistrează-te aici!</a></p>
+</div>

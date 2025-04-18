@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,8 @@ import { UserService } from '../user.service';
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.scss'],
+  //encapsulation: ViewEncapsulation.None,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
 })
 export class LoginComponent {
@@ -27,6 +28,9 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 
   onSubmit(): void {

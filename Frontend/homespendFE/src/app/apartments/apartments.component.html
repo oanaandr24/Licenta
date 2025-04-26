@@ -1,0 +1,9 @@
+<h2>Apartamentele Mele</h2>
+<ul *ngIf="apartments.length > 0; else noApartments">
+  <li *ngFor="let ap of apartments">
+    {{ ap.address_city }}, {{ ap.address_street }}, Bloc {{ ap.address_block }} – Suprafață: {{ ap.surface }}
+  </li>
+</ul>
+<ng-template #noApartments>
+  <p>Nu ai niciun apartament asociat.</p>
+</ng-template>

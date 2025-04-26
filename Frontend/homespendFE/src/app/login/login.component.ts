@@ -46,8 +46,12 @@ export class LoginComponent {
           console.log('Login reușit:', response);
           this.errorMessage = null;
           // Dacă login-ul este reușit, putem salva un token, de exemplu:
-          localStorage.setItem('authToken',  JSON.stringify(response));  // Sau orice altceva
-          this.router.navigate(['/dashboard']);  // Redirect către pagina de dashboard
+          localStorage.setItem('authToken',  JSON.stringify(response));
+          if (response.userCode) {
+            localStorage.setItem('userCode', response.userCode);
+          }
+          this.router.navigate(['/apartments']);
+          //this.router.navigate(['/dashboard']);  // Redirect către pagina de dashboard
         },
         error: (error) => {
           console.error('Eroare la login:', error);

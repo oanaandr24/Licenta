@@ -19,24 +19,18 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
     private String phone;
-    private String address_city;
-    private String address_street;
-    private String address_block;
     private String role;
     private String userCode;
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String phone, String password, String address_city, String address_street, String address_block, String role, String userCode) {
+    public User(Long id, String name, String email, String phone, String password, String role, String userCode) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.address_city = address_city;
-        this.address_street = address_street;
-        this.address_block = address_block;
         this.role = role;
         this.userCode = userCode;
     }
@@ -81,30 +75,6 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public String getAddress_city() {
-        return address_city;
-    }
-
-    public void setAddress_city(String address_city) {
-        this.address_city = address_city;
-    }
-
-    public String getAddress_street() {
-        return address_street;
-    }
-
-    public void setAddress_street(String address_street) {
-        this.address_street = address_street;
-    }
-
-    public String getAddress_block() {
-        return address_block;
-    }
-
-    public void setAddress_block(String address_block) {
-        this.address_block = address_block;
-    }
-
     public String getRole() {
         return role;
     }
@@ -129,9 +99,6 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
-                ", address_city='" + address_city + '\'' +
-                ", address_street='" + address_street + '\'' +
-                ", address_block='" + address_block + '\'' +
                 ", role='" + role + '\'' +
                 ", userCode='" + userCode + '\'' +
                 '}';

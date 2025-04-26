@@ -44,5 +44,8 @@ public class UserService {
     public void deleteUser(Long id) {
          userRepo.deleteUserById(id);
     }
+    public void deleteUserByUserCode(String userCode) {
+         userRepo.deleteUserByUserCode(userCode);
+    }
 }
 

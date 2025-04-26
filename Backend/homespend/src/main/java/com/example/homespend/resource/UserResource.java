@@ -1,6 +1,7 @@
 package com.example.homespend.resource;
 
 import com.example.homespend.model.User;
+import com.example.homespend.service.ApartmentsService;
 import com.example.homespend.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,9 +20,11 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserResource {
     private final UserService userService;
+    private final ApartmentsService apartmentsService;
 
-    public UserResource(UserService userService) {
+    public UserResource(UserService userService, ApartmentsService apartmentsService) {
         this.userService = userService;
+        this.apartmentsService = apartmentsService;
     }
 
     @GetMapping("/all")
@@ -50,9 +53,10 @@ public class UserResource {
     }
 
     @Transactional
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/delete/{userCode}")
+    public ResponseEntity<?> deleteUser(@PathVariable("userCode") String userCode) {
+        userService.deleteUserByUserCode(userCode);
+        apartmentsService.deleteApartmentsByUserCode(userCode);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -78,7 +82,7 @@ public class UserResource {
             System.out.println("HashedPass:" + hashedPassword);
             if (user.getPassword().equals(hashedPassword)) {
                 // ✅ Login reușit
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

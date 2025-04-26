@@ -33,4 +33,8 @@ export class UserService {
     return this.http.post<User>(`${this.apiServerUrl}/user/login`, user);
   }
 
+  //public getUserApartments(userId: number): Observable<any[]> {
+  //  return this.http.get<any[]>(`${this.apiServerUrl}/apartments/user/${userId}`);
+  //}
+
 }

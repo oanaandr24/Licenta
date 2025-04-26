@@ -18,23 +18,16 @@ public class Bills implements Serializable {
     private String invoiceDate;
     private String dueDate;
     private String paymentValue;
-    private String apartmentCode;
+    private String apartmentsCode;
 
     public Bills() {
     }
 
-    public Bills(Long id, String apartmentCode, String paymentValue, String dueDate, String invoiceDate, Float oldIndex, String number, String type, Float amountConsumed, Float newIndex) {
+    public Bills(Long id, String apartmentsCode, String paymentValue, String dueDate, String invoiceDate, Float oldIndex, String number, String type, Float amountConsumed, Float newIndex) {
         this.id = id;
-        this.apartmentCode = apartmentCode;
+        this.apartmentsCode = apartmentsCode;
         this.paymentValue = paymentValue;
-        if(amountConsumed!= 0)
-        {
-            this.amountConsumed = amountConsumed;
-        }
-        else
-        {
-            this.amountConsumed = newIndex - oldIndex;
-        }
+        this.amountConsumed = amountConsumed;
         this.dueDate = dueDate;
         this.invoiceDate = invoiceDate;
         this.oldIndex = oldIndex;
@@ -115,12 +108,12 @@ public class Bills implements Serializable {
         this.paymentValue = paymentValue;
     }
 
-    public String getApartmentCode() {
-        return apartmentCode;
+    public String getApartmentsCode() {
+        return apartmentsCode;
     }
 
-    public void setApartmentCode(String apartmentCode) {
-        this.apartmentCode = apartmentCode;
+    public void setApartmentsCode(String apartmentCode) {
+        this.apartmentsCode = apartmentCode;
     }
 
     @Override
@@ -135,7 +128,7 @@ public class Bills implements Serializable {
                 ", invoiceDate='" + invoiceDate + '\'' +
                 ", dueDate='" + dueDate + '\'' +
                 ", paymentValue='" + paymentValue + '\'' +
-                ", apartmentCode='" + apartmentCode + '\'' +
+                ", apartmentsCode='" + apartmentsCode + '\'' +
                 '}';
     }
 }

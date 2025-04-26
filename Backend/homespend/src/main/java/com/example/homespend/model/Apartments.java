@@ -14,18 +14,18 @@ public class Apartments implements Serializable {
     private String address_street;
     private String address_block;
     private String surface;
-    private String apartamentsCode;
+    private String apartmentsCode;
     private String administrator;
     private String administratorCode;
 
-    public Apartments(Long id, String userCode, String address_city, String address_street, String address_block, String surface, String apartamentsCode, String administrator, String administratorCode) {
+    public Apartments(Long id, String userCode, String address_city, String address_street, String address_block, String surface, String apartmentsCode, String administrator, String administratorCode) {
         this.id = id;
         this.userCode = userCode;
         this.address_city = address_city;
         this.address_street = address_street;
         this.address_block = address_block;
         this.surface = surface;
-        this.apartamentsCode = apartamentsCode;
+        this.apartmentsCode = apartmentsCode;
         this.administrator = administrator;
         this.administratorCode = administratorCode;
     }
@@ -80,12 +80,12 @@ public class Apartments implements Serializable {
         this.surface = surface;
     }
 
-    public String getApartamentsCode() {
-        return apartamentsCode;
+    public String getApartmentsCode() {
+        return apartmentsCode;
     }
 
-    public void setApartamentsCode(String apartamentsCode) {
-        this.apartamentsCode = apartamentsCode;
+    public void setApartmentsCode(String apartmentsCode) {
+        this.apartmentsCode = apartmentsCode;
     }
 
     public String getAdministrator() {
@@ -108,13 +108,14 @@ public class Apartments implements Serializable {
     public String toString() {
         return "Apartments{" +
                 "id=" + id +
+                ", userCode='" + userCode + '\'' +
                 ", address_city='" + address_city + '\'' +
                 ", address_street='" + address_street + '\'' +
                 ", address_block='" + address_block + '\'' +
                 ", surface='" + surface + '\'' +
-                ", apartamentsCode='" + apartamentsCode + '\'' +
+                ", apartmentsCode='" + apartmentsCode + '\'' +
                 ", administrator='" + administrator + '\'' +
-                ", administratorCode='" + apartamentsCode + '\'' +
+                ", administratorCode='" + administratorCode + '\'' +
                 '}';
     }
 }

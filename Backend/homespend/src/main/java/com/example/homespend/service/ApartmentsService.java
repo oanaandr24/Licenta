@@ -8,6 +8,8 @@ import com.example.homespend.repo.UserRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ApartmentsService {
@@ -26,11 +28,15 @@ public class ApartmentsService {
         return apartmentsRepo.findAll();
     }
 
-    public Apartments createApartmentForUser(String userCode, Apartments apartment) {
+    public Apartments createApartmentForUser(Apartments apartment) {
+        String userCode = apartment.getUserCode();
+        if(userCode == null) {
+             throw new RuntimeException("User not found");
+        }
+        apartment.setApartmentsCode(UUID.randomUUID().toString());
         User user = userRepo.findUserByUserCode(userCode)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        apartment.setUserCode(user.getUserCode());
         return apartmentsRepo.save(apartment);
     }
 
@@ -43,12 +49,16 @@ public class ApartmentsService {
         List<Apartments> apt = apartmentsRepo.findByUserCode(userCode);
         apartmentsRepo.deleteByUserCode(userCode);
         for (Apartments ap : apt) {
-            billsRepo.deleteByApartmentCode(ap.getApartamentsCode());
+            billsRepo.deleteByApartmentsCode(ap.getApartmentsCode());
         }
    }
 
-   public void deleteApartmentByApartmentCode(String apartmentCode) {
-        apartmentsRepo.deleteByApartamentsCode(apartmentCode);
+   public void deleteApartmentByApartmentCode(String apartmentsCode) {
+        apartmentsRepo.deleteByApartmentsCode(apartmentsCode);
+   }
+
+   public Optional<Apartments> findApartmentByApartmentCode(String apartmentsCode) {
+        return apartmentsRepo.findByApartmentsCode(apartmentsCode);
    }
 
 }

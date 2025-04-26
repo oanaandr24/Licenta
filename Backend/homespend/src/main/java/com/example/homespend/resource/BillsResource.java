@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @RestController
 @RequestMapping("/bills")
 public class BillsResource {
@@ -38,6 +40,15 @@ public class BillsResource {
         Bills updateBills = billsService.updateBills(bills);
         return new ResponseEntity<>(updateBills, HttpStatus.OK);
     }
+
+    @Transactional
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteBills(@PathVariable("id") Long id) {
+        billsService.deleteBill(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 
 }

@@ -4,6 +4,7 @@ import com.example.homespend.model.Apartments;
 import com.example.homespend.repo.ApartmentsRepo;
 import com.example.homespend.service.ApartmentsService;
 import com.example.homespend.service.BillsService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +36,12 @@ public class ApartmentsResource {
         return ResponseEntity.ok(apartments);
     }
 
-    @PostMapping("/create/{userCode}")
-    public ResponseEntity<Apartments> create(@PathVariable String userCode, @RequestBody Apartments apartment) {
-        return ResponseEntity.ok(apartmentsService.createApartmentForUser(userCode, apartment));
+    @PostMapping("/add")
+    public ResponseEntity<Apartments> create(@RequestBody Apartments apartment) {
+        return ResponseEntity.ok(apartmentsService.createApartmentForUser(apartment));
     }
 
+    @Transactional
     @DeleteMapping("/delete/{apartmentCode}")
     public ResponseEntity<?> deleteApartment(@PathVariable("apartmentCode") String apartmentCode) {
         apartmentsService.deleteApartmentByApartmentCode(apartmentCode);

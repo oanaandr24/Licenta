@@ -21,8 +21,11 @@ public class UserService {
     }
     public User addUser(User user) {
          user.setUserCode(UUID.randomUUID().toString());
-        try {
-            Role aux = Role.valueOf(user.getRole());
+         try {
+            if(user.getRole() == null)
+            {
+                user.setRole(String.valueOf(Role.LOCATAR));
+            }
             return userRepo.save(user);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid enum value: " + user.getRole());

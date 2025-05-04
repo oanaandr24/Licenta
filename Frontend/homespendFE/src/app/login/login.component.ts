@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../user.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,13 +23,19 @@ export class LoginComponent {
     private fb: FormBuilder,
     private http: HttpClient,
     private userService: UserService,
-    private router: Router // Injectăm router-ul pentru redirect
+    private router: Router,
+    private authService: AuthService 
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
+
+  ngOnInit() {
+    this.authService.setAuthenticated(false); 
+  }
+
   goToRegister() {
     this.router.navigate(['/register']);
   }
@@ -43,6 +50,7 @@ export class LoginComponent {
     // Apelăm API-ul backend
     this.userService.login(loginData).subscribe({
         next: (response) => {
+          this.authService.setAuthenticated(true); 
           console.log('Login reușit:', response);
           this.errorMessage = null;
           // Dacă login-ul este reușit, putem salva un token, de exemplu:
@@ -54,6 +62,7 @@ export class LoginComponent {
           //this.router.navigate(['/dashboard']);  // Redirect către pagina de dashboard
         },
         error: (error) => {
+          this.authService.setAuthenticated(false); 
           console.error('Eroare la login:', error);
           this.errorMessage = 'Email sau parolă greșite!';
         }

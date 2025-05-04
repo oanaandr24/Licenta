@@ -21,31 +21,6 @@
       <label for="password">Parolă:</label>
       <input type="password" id="password" formControlName="password" placeholder="Introduceți parola" class="form-control" />
     </div>
-
-    <div class="form-group">
-      <label for="address_city">Oraș:</label>
-      <input type="text" id="address_city" formControlName="address_city" placeholder="Introduceți orașul" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="address_street">Stradă:</label>
-      <input type="text" id="address_street" formControlName="address_street" placeholder="Introduceți strada" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="address_block">Bloc:</label>
-      <input type="text" id="address_block" formControlName="address_block" placeholder="Introduceți blocul" class="form-control" />
-    </div>
-
-    <div class="form-group">
-      <label for="role">Rol:</label>
-      <select id="role" formControlName="role" class="form-control">
-        <option value="" disabled selected>Alege rolul</option> <!-- Obligatoriu să aleagă -->
-        <option value="LOCATAR">Locatar</option>
-        <option value="ADMIN">Admin</option>
-      </select>
-    </div>
-
     <button type="submit" [disabled]="registerForm.invalid" class="btn-submit">Înregistrare</button>
   </form>
 

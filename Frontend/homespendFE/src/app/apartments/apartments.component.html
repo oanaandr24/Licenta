@@ -1,9 +1,16 @@
 <h2>Apartamentele Mele</h2>
-<ul *ngIf="apartments.length > 0; else noApartments">
-  <li *ngFor="let ap of apartments">
-    {{ ap.address_city }}, {{ ap.address_street }}, Bloc {{ ap.address_block }} – Suprafață: {{ ap.surface }}
-  </li>
-</ul>
+<div *ngIf="apartments.length > 0; else noApartments">
+  <div *ngFor="let ap of apartments">
+    <div (click)="test(ap)">
+      <p-card header="Simple Card">
+        <p class="m-0">
+          {{ ap.address_city }}, {{ ap.address_street }}, Bloc {{ ap.address_block }} – Suprafață: {{ ap.surface }}
+        </p>
+      </p-card>
+    </div>
+  </div>
+</div>
+
 <ng-template #noApartments>
   <p>Nu ai niciun apartament asociat.</p>
 </ng-template>

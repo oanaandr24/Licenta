@@ -32,6 +32,9 @@
               }
             ],
             "styles": [
+              "primeng/resources/themes/aura-dark-blue/theme.css",
+              "primeicons/primeicons.css",
+              "primeflex/primeflex.css",
               "src/styles.scss"
             ],
             "scripts": []

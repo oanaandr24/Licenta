@@ -3,10 +3,17 @@ import { Apartments } from '../apartments';
 import { ApartmentService } from '../apartments.service';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from '../login/login.component';  
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-apartments',
-  imports: [[CommonModule]],
+  imports: [[
+    CommonModule,
+    CardModule,
+    ButtonModule
+  ]],
   templateUrl: './apartments.component.html',
   styleUrl: './apartments.component.scss'
 })
@@ -15,7 +22,11 @@ export class ApartmentsComponent implements OnInit {
   apartments: Apartments[] = [];
   userCode!: string;
 
-  constructor(private apartmentService: ApartmentService) {}
+  constructor(
+    private apartmentService: ApartmentService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     
@@ -31,6 +42,12 @@ export class ApartmentsComponent implements OnInit {
         }
       })
     }
+  }
+
+  test(ap: any) {
+    this.router.navigate(['bills'], {
+      state: {ap: ap}
+    })
   }
 
 }

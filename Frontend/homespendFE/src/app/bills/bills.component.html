@@ -1,0 +1,29 @@
+<p-card header="Facturi pentru apartamentul {{ ap?.apartmentsCode }}">
+    <p-table [value]="bills" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Tip</th>
+          <th>Număr</th>
+          <th>Index Vechi</th>
+          <th>Index Nou</th>
+          <th>Consum</th>
+          <th>Data Factură</th>
+          <th>Scadență</th>
+          <th>Valoare</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-bill>
+        <tr>
+          <td>{{ bill.type }}</td>
+          <td>{{ bill.number }}</td>
+          <td>{{ bill.oldIndex }}</td>
+          <td>{{ bill.newIndex }}</td>
+          <td>{{ bill.amountConsumed }}</td>
+          <td>{{ bill.invoiceDate }}</td>
+          <td>{{ bill.dueDate }}</td>
+          <td>{{ bill.paymentValue }} RON</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+  

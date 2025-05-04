@@ -31,7 +31,8 @@ public class BillsService {
         }
         Apartments apartment = apartmentsRepo.findByApartmentsCode(apartmentsCode).orElseThrow(() -> new RuntimeException("Apartment code not found"));
 
-        if(bill.getAmountConsumed() == null){
+        if (bill.getAmountConsumed() == null)
+        {
             bill.setAmountConsumed(bill.getNewIndex()-bill.getOldIndex());
         }
 
@@ -53,5 +54,9 @@ public class BillsService {
 
     public void deleteBill(Long id) {
         billsRepo.deleteById(id);
+    }
+
+    public List<Bills> getBillsByApartmentsCode(String code) {
+        return billsRepo.findBillsByApartmentsCode(code);
     }
 }

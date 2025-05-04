@@ -48,6 +48,12 @@ public class BillsResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/all/apartment/{code}")
+    public List<Bills> getBillsByApartmentCode(@PathVariable String code) {
+        return billsService.getBillsByApartmentsCode(code);
+    }
+
+
 
 
 

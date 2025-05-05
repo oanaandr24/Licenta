@@ -16,7 +16,7 @@ ngOnInit() {
   this.ap = window.history.state['ap']
   console.log('this ap', this.ap.apartmentsCode)
 }
-}*/
+}
 import { Component, OnInit } from '@angular/core';
 import { BillsService } from 'src/app/bills.service';
 import { Bills } from 'src/app/bills';
@@ -56,6 +56,54 @@ export class BillsComponent implements OnInit {
         console.error('Eroare la încărcarea facturilor:', err);
       }
     });
+  }
+}
+*/
+import { Component, OnInit } from '@angular/core';
+import { BillsService } from 'src/app/bills.service';
+import { Bills } from 'src/app/bills';
+import { TableModule } from 'primeng/table';
+import { CardModule } from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-bills',
+  standalone: true,
+  imports: [
+    TableModule,
+    CommonModule,
+    CardModule,
+    DialogModule
+  ],
+  templateUrl: './bills.component.html',
+  styleUrls: ['./bills.component.scss']
+})
+export class BillsComponent implements OnInit {
+  ap: any;
+  bills: Bills[] = [];
+
+  selectedBill: Bills | null = null;
+  displayModal: boolean = false;
+
+  constructor(private billsService: BillsService) {}
+
+  ngOnInit() {
+    this.ap = window.history.state['ap'];
+    if (this.ap?.apartmentsCode) {
+      this.loadBills(this.ap.apartmentsCode);
+    }
+  }
+
+  loadBills(code: string) {
+    this.billsService.getBillsByApartment(code).subscribe({
+      next: (data) => this.bills = data,
+      error: (err) => console.error('Eroare la încărcarea facturilor:', err)
+    });
+  }
+
+  openModal() {
+    this.displayModal = true;
   }
 }
 

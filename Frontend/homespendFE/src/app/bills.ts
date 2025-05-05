@@ -9,5 +9,6 @@ export interface Bills {
     dueDate: string;
     paymentValue: string;
     apartmentsCode: string;
+    status: string;
 
 }

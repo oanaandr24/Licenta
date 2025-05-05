@@ -1,6 +1,6 @@
 <h2>Apartamentele Mele</h2>
 <div *ngIf="apartments.length > 0; else noApartments">
-  <div *ngFor="let ap of apartments">
+  <div *ngFor="let ap of apartments" style="margin-bottom: 16px;">
     <div (click)="test(ap)">
       <p-card header="Simple Card">
         <p class="m-0">

@@ -35,7 +35,10 @@ public class BillsService {
         {
             bill.setAmountConsumed(bill.getNewIndex()-bill.getOldIndex());
         }
-
+        if (bill.getStatus() == null)
+        {
+            bill.setStatus("NEPLATIT");
+        }
         return billsRepo.save(bill);
     }
 

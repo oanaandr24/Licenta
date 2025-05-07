@@ -81,7 +81,6 @@ public class UserResource {
             String hashedPassword = toHexString(getSHA(loginRequest.getPassword()));
             System.out.println("HashedPass:" + hashedPassword);
             if (user.getPassword().equals(hashedPassword)) {
-                // ✅ Login reușit
                 return new ResponseEntity<>(user, HttpStatus.OK);
             }
         }

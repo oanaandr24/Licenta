@@ -1,11 +1,18 @@
+<app-header></app-header>
+<div class="page-container">
 <h2>Apartamentele Mele</h2>
-<div *ngIf="apartments.length > 0; else noApartments">
-  <div *ngFor="let ap of apartments" style="margin-bottom: 16px;">
+<div *ngIf="apartments.length > 0; else noApartments"  class="apartamente">
+  <div *ngFor="let ap of apartments">
     <div (click)="test(ap)">
-      <p-card header="Simple Card">
+    <p-card [header]="ap.apartamentsCode">
         <p class="m-0">
           {{ ap.address_city }}, {{ ap.address_street }}, Bloc {{ ap.address_block }} – Suprafață: {{ ap.surface }}
         </p>
+        <ng-template pTemplate="footer">
+          <div class="flex gap-3 mt-1">
+              <p-button label="Vezi apartament" class="w-full" styleClass="w-full" />
+          </div>
+      </ng-template>
       </p-card>
     </div>
   </div>
@@ -14,3 +21,4 @@
 <ng-template #noApartments>
   <p>Nu ai niciun apartament asociat.</p>
 </ng-template>
+  </div>

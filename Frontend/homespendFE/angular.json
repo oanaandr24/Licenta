@@ -32,7 +32,7 @@
               }
             ],
             "styles": [
-              "primeng/resources/themes/aura-dark-blue/theme.css",
+              "primeng/resources/themes/aura-light-green/theme.css",
               "primeicons/primeicons.css",
               "primeflex/primeflex.css",
               "src/styles.scss"
@@ -101,5 +101,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -1,0 +1,20 @@
+.apartamente {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 1em;
+    justify-content: start; 
+
+  }
+  
+  :host ::ng-deep {
+    .p-button {
+    background: #69827a;
+    border: 1px solid #69827a;
+    }
+
+    .p-card {
+        border-radius: 5px;
+        box-shadow: 2px 2px 2px grey;
+        width: 30em;
+    }
+  }

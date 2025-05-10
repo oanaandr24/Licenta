@@ -1,37 +1,92 @@
-<p-card header="Facturi">
-  <p-table [value]="bills" [paginator]="true" [rows]="5" responsiveLayout="scroll"
-           selectionMode="single"
-           [(selection)]="selectedBill"
-           (onRowSelect)="openModal()">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Tip</th>
-        <th>Scadență</th>
-        <th>Valoare</th>
-        <th>Status</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-bill>
-      <tr [pSelectableRow]="bill">
-        <td>{{ bill.type }}</td>
-        <td>{{ bill.dueDate }}</td>
-        <td>{{ bill.paymentValue }} RON</td>
-        <td>{{ bill.status}}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</p-card>
-
-<!-- Modal -->
-<p-dialog header="Detalii Factură" [(visible)]="displayModal" modal="true" [closable]="true" [style]="{width: '50vw'}">
-  <div *ngIf="selectedBill">
-    <p><strong>Tip:</strong> {{ selectedBill?.type }}</p>
-    <p><strong>Număr:</strong> {{ selectedBill?.number }}</p>
-    <p><strong>Index Vechi:</strong> {{ selectedBill?.oldIndex }}</p>
-    <p><strong>Index Nou:</strong> {{ selectedBill?.newIndex }}</p>
-    <p><strong>Consum:</strong> {{ selectedBill?.amountConsumed }}</p>
-    <p><strong>Data Factură:</strong> {{ selectedBill?.invoiceDate }}</p>
-    <p><strong>Scadență:</strong> {{ selectedBill?.dueDate }}</p>
-    <p><strong>Valoare:</strong> {{ selectedBill?.paymentValue }} RON</p>
+<app-header></app-header>
+<div class="page-container"> 
+  <div class="flex justify-content-start mt-2 -ml-3"> 
+    <p-button [text]="true" (click)="onBack()" icon="pi pi-arrow-left" iconPos="left" severity="contrast" label="Înapoi"></p-button>
   </div>
-</p-dialog>
+  <h2>Facturi</h2>
+  <p-card>
+    <p-table
+      #dt1
+      [value]="bills"
+      [paginator]="true"
+      [rows]="5"
+      responsiveLayout="scroll"
+      selectionMode="single"
+      [(selection)]="selectedBill"
+      (onRowSelect)="openModal()"
+      [globalFilterFields]="['type', 'dueDate', 'paymentValue', 'status']"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between">
+          <p>
+            Vezi facturile aferente apartamentului
+            <strong>{{ ap.apartmentsCode }}</strong>
+          </p>
+          <div class="flex">
+            <p-iconField iconPosition="left" class="ml-auto">
+              <p-inputIcon>
+                <i class="pi pi-search"></i>
+              </p-inputIcon>
+              <input
+                pInputText
+                type="text"
+                (input)="applyFilterGlobal($event, 'contains')"
+                placeholder="Caută"
+              />
+            </p-iconField>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="type">
+            Tip <p-sortIcon field="type"></p-sortIcon>
+          </th>
+          <th pSortableColumn="dueDate">
+            Scadență <p-sortIcon field="dueDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paymentValue">
+            Valoare <p-sortIcon field="paymentValue"></p-sortIcon>
+          </th>
+          <th pSortableColumn="status">
+            Status <p-sortIcon field="status"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-bill>
+        <tr [pSelectableRow]="bill">
+          <td>{{ bill.type }}</td>
+          <td>{{ bill.dueDate }}</td>
+          <td>{{ bill.paymentValue }} RON</td>
+          <td>
+            <p-tag
+              [value]="bill.status"
+              [severity]="getSeverity(bill.status)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <!-- Modal -->
+  <p-dialog
+    header="Detalii Factură"
+    [(visible)]="displayModal"
+    modal="true"
+    [closable]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+  >
+    <div *ngIf="selectedBill">
+      <p><strong>Tip:</strong> {{ selectedBill?.type }}</p>
+      <p><strong>Număr:</strong> {{ selectedBill?.number }}</p>
+      <p><strong>Index Vechi:</strong> {{ selectedBill?.oldIndex }}</p>
+      <p><strong>Index Nou:</strong> {{ selectedBill?.newIndex }}</p>
+      <p><strong>Consum:</strong> {{ selectedBill?.amountConsumed }}</p>
+      <p><strong>Data Factură:</strong> {{ selectedBill?.invoiceDate }}</p>
+      <p><strong>Scadență:</strong> {{ selectedBill?.dueDate }}</p>
+      <p><strong>Valoare:</strong> {{ selectedBill?.paymentValue }} RON</p>
+    </div>
+  </p-dialog>
+</div>

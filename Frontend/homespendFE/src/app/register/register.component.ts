@@ -27,11 +27,7 @@ export class RegisterComponent {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      address_city: ['', Validators.required],
-      address_street: ['', Validators.required],
-      address_block: ['', Validators.required],
-      role: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 

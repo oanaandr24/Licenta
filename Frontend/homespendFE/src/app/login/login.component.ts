@@ -6,6 +6,8 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { RouterModule } from '@angular/router';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,13 @@ import { AuthService } from '../auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   //encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    RouterModule,
+    InputTextModule,
+    FloatLabelModule
+  ],
 })
 export class LoginComponent {
   loginForm: FormGroup;

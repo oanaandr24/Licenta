@@ -6,13 +6,15 @@ import { LoginComponent } from '../login/login.component';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-apartments',
   imports: [[
     CommonModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    HeaderComponent
   ]],
   templateUrl: './apartments.component.html',
   styleUrl: './apartments.component.scss'

@@ -28,14 +28,20 @@ public class ApartmentsService {
         return apartmentsRepo.findAll();
     }
 
-    public Apartments createApartmentForUser(Apartments apartment) {
+    public Apartments createApartmentForUser(String email, Apartments apartment) {
+
+        User user = userRepo.findUserByEmail(email);
+        apartment.setUserCode(user.getUserCode());
         String userCode = apartment.getUserCode();
+        if(apartment.getAdministratorCode() == null){
+            throw new RuntimeException("Administrator code is null");
+        }
         if(userCode == null) {
              throw new RuntimeException("User not found");
         }
         apartment.setApartmentsCode(UUID.randomUUID().toString());
-        User user = userRepo.findUserByUserCode(userCode)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+//        User user = userRepo.findUserByUserCode(userCode)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
 
         return apartmentsRepo.save(apartment);
     }

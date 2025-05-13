@@ -53,7 +53,7 @@ export class ProfileComponent {
       phone: [{ value: '', disabled: true }, Validators.required],
       password: [{ value: '', disabled: true }],
       role: [{ value: '', disabled: true }],
-      user_code: [{ value: '', disabled: true }],
+      userCode: [{ value: '', disabled: true }],
     });
   }
 
@@ -76,7 +76,7 @@ export class ProfileComponent {
           phone: data['phone'],
           password: data['password'],
           role: data['role'],
-          user_code: data['user_code'],
+          userCode: data['userCode'],
         };
 
         this.profileForm.patchValue(userData);

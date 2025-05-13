@@ -1,0 +1,40 @@
+<app-header></app-header>
+<div class="page-container">
+  <div class="flex justify-content-center">
+    <p-card [style]="{ width: '50em', 'margin-top': '4em' }">
+      <div class="flex justify-content-between">
+        <p-button
+          label="Apartamentele mele"
+          [style]="{ width: '12em' }"
+          (click)="goToApartments()"
+        ></p-button>
+        <div class="avatar-wrapper">
+          <p-avatar icon="pi pi-user" shape="circle" size="xlarge"></p-avatar>
+        </div>
+        <p-button label="Statistici" [style]="{ width: '12em' }" (click)="goToStats()"></p-button>
+      </div>
+      <div class="flex justify-content-center">
+        <p>{{ role }}</p>
+      </div>
+
+      <form [formGroup]="profileForm">
+        <div class="flex flex-column justify-content-center gap-3">
+          <span>Nume:</span>
+          <input type="text" pInputText formControlName="name" />
+          <span>Email:</span>
+          <input type="email" pInputText formControlName="email" />
+          <span>Telefon:</span>
+          <input type="text" pInputText formControlName="phone" />
+          <div class="flex justify-content-center">
+            <p-button
+              [label]="isEditing ? 'Salvează' : 'Editează'"
+              (click)="toggleEdit()"
+            ></p-button>
+          </div>
+        </div>
+      </form>
+    </p-card>
+  </div>
+</div>
+
+<p-toast></p-toast>

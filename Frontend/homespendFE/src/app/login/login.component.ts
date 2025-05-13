@@ -60,6 +60,13 @@ export class LoginComponent {
         next: (response) => {
           this.authService.setAuthenticated(true); 
           console.log('Login reușit:', response);
+
+          sessionStorage.setItem('id', JSON.stringify(response.id))
+          sessionStorage.setItem('name', response.name)
+          sessionStorage.setItem('role', response.role)
+          sessionStorage.setItem('phone', response.phone)
+          sessionStorage.setItem('email', response.email)
+
           this.errorMessage = null;
           // Dacă login-ul este reușit, putem salva un token, de exemplu:
           localStorage.setItem('authToken',  JSON.stringify(response));

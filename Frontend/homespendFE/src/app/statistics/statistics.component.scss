@@ -1,0 +1,17 @@
+:host ::ng-deep {
+    .p-card {
+        width: 30em;
+        height: 30em;
+    }
+
+    .p-button {
+        background: #69827a;
+        border: 1px solid #69827a;
+        }
+}
+ 
+.p-table-wrapper { /* Un wrapper pentru tabel pentru a aplica înălțimea maximă */
+    max-height: 400px; /* Ajustează această valoare după nevoie */
+    overflow-y: auto; /* Adaugă scroll vertical când conținutul depășește max-height */
+  }
+  

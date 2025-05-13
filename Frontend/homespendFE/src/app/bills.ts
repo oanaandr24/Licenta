@@ -10,5 +10,4 @@ export interface Bills {
     paymentValue: string;
     apartmentsCode: string;
     status: string;
-
 }

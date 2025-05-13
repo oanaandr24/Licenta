@@ -13,6 +13,11 @@ export class UserService {
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiServerUrl}/user/all`);
   }
+
+  public getUserById(userId: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiServerUrl}/user/find/${userId}`);
+  }
+
   public addUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.apiServerUrl}/user/add`, user);
   }

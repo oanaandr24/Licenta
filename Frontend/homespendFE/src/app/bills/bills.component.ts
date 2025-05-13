@@ -143,6 +143,12 @@ export class BillsComponent implements OnInit {
     );
   }
 
+  goToStats() {
+    this.router.navigate(['stats'], {
+      state: {ap: this.ap}
+    })
+  }
+
   onBack() {
     this.router.navigate(['apartments'])
   }

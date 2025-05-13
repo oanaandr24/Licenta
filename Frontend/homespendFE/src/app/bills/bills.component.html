@@ -3,7 +3,10 @@
   <div class="flex justify-content-start mt-2 -ml-3"> 
     <p-button [text]="true" (click)="onBack()" icon="pi pi-arrow-left" iconPos="left" severity="contrast" label="Înapoi"></p-button>
   </div>
-  <h2>Facturi</h2>
+  <div class="flex justify-content-between">
+    <h2>Facturi</h2>
+    <p-button label="Statistici" [style]="{ width: '12em' }" (click)="goToStats()"></p-button>
+  </div>
   <p-card>
     <p-table
       #dt1

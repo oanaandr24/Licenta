@@ -4,6 +4,7 @@ import com.example.homespend.model.Apartments;
 import com.example.homespend.model.User;
 import com.example.homespend.repo.ApartmentsRepo;
 import com.example.homespend.repo.BillsRepo;
+import com.example.homespend.repo.IndexRepo;
 import com.example.homespend.repo.UserRepo;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ public class ApartmentsService {
     private final ApartmentsRepo apartmentsRepo;
     private final UserRepo userRepo;
     private final BillsRepo billsRepo;
+    private final IndexRepo indexRepo;
 
-    public ApartmentsService(ApartmentsRepo apartmentsRepo, UserRepo userRepo, BillsRepo billsRepo) {
+    public ApartmentsService(ApartmentsRepo apartmentsRepo, UserRepo userRepo, BillsRepo billsRepo, IndexRepo indexRepo) {
         this.apartmentsRepo = apartmentsRepo;
         this.userRepo = userRepo;
         this.billsRepo = billsRepo;
+        this.indexRepo = indexRepo;
     }
 
     public List<Apartments> findAllApartments() {
@@ -56,6 +59,7 @@ public class ApartmentsService {
         apartmentsRepo.deleteByUserCode(userCode);
         for (Apartments ap : apt) {
             billsRepo.deleteByApartmentsCode(ap.getApartmentsCode());
+            indexRepo.deleteByApartmentsCode(ap.getApartmentsCode());
         }
    }
 

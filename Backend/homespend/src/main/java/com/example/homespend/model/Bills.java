@@ -19,13 +19,14 @@ public class Bills implements Serializable {
     private String dueDate;
     private String paymentValue;
     private String status;
+    private String provider;
     private String apartmentsCode;
 
 
     public Bills() {
     }
 
-    public Bills(Long id, String apartmentsCode, String paymentValue, String dueDate, String invoiceDate, Float oldIndex, String number, String type, Float amountConsumed, Float newIndex, String status) {
+    public Bills(Long id, String apartmentsCode, String paymentValue, String dueDate, String invoiceDate, Float oldIndex, String number, String type, Float amountConsumed, Float newIndex, String status, String provider) {
         this.id = id;
         this.apartmentsCode = apartmentsCode;
         this.paymentValue = paymentValue;
@@ -36,6 +37,7 @@ public class Bills implements Serializable {
         this.number = number;
         this.type = type;
         this.newIndex = newIndex;
+        this.provider = provider;
         this.status = status;
     }
 
@@ -127,6 +129,14 @@ public class Bills implements Serializable {
         this.status = status;
     }
 
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
     @Override
     public String toString() {
         return "Bills{" +
@@ -140,6 +150,7 @@ public class Bills implements Serializable {
                 ", dueDate='" + dueDate + '\'' +
                 ", paymentValue='" + paymentValue + '\'' +
                 ", status='" + status + '\'' +
+                ", provider='" + provider + '\'' +
                 ", apartmentsCode='" + apartmentsCode + '\'' +
                 '}';
     }

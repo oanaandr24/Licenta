@@ -93,5 +93,5 @@ public class BillsResource {
         Bills updatedBill = billsService.removePdfFile(id);
         return new ResponseEntity<>(updatedBill, HttpStatus.OK);
     }
-    
+
 }

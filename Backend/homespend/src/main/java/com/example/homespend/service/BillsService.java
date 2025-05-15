@@ -50,29 +50,6 @@ public class BillsService {
         return billsRepo.findAll();
     }
 
-    /*public Bills updateBillsById(Long id, Bills bill) {
-        Optional<Bills> optionalExistingBill = billsRepo.findBillsById(id);
-        if (optionalExistingBill.isEmpty()) {
-            throw new RuntimeException("Bill not found with id: " + id);
-        }
-        Bills existingBill = optionalExistingBill.get();
-
-        if (bill.getType() != null) existingBill.setType(bill.getType());
-        if (bill.getNumber() != null) existingBill.setNumber(bill.getNumber());
-        if (bill.getOldIndex() != null) existingBill.setOldIndex(bill.getOldIndex());
-        if (bill.getNewIndex() != null) existingBill.setNewIndex(bill.getNewIndex());
-        if (bill.getAmountConsumed() != null) existingBill.setAmountConsumed(bill.getAmountConsumed());
-        if (bill.getInvoiceDate() != null) existingBill.setInvoiceDate(bill.getInvoiceDate());
-        if (bill.getDueDate() != null) existingBill.setDueDate(bill.getDueDate());
-        if (bill.getPaymentValue() != null) existingBill.setPaymentValue(bill.getPaymentValue());
-        if (bill.getStatus() != null) existingBill.setStatus(bill.getStatus());
-        if (bill.getProvider() != null) existingBill.setProvider(bill.getProvider());
-        if (bill.getPdfFile() != null) existingBill.setPdfFile(bill.getPdfFile());
-        if (bill.getApartmentsCode() != null) throw new RuntimeException("Action not allowed!");
-
-        return billsRepo.save(existingBill);
-    }*/
-
     public void deleteBillsByApartmentCode(String apartmentsCode) {
         billsRepo.deleteByApartmentsCode(apartmentsCode);
     }
@@ -124,4 +101,10 @@ public class BillsService {
         return billsRepo.save(existingBill);
     }
 
+    public Bills removePdfFile(Long id) {
+        Bills bill = billsRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Bill not found"));
+        bill.setPdfFile(null);
+        return billsRepo.save(bill);
+    }
 }

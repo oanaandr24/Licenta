@@ -1,8 +1,15 @@
 package com.example.homespend.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+
+@JsonPropertyOrder({
+        "id", "type", "number", "oldIndex", "newIndex",
+        "amountConsumed", "invoiceDate", "dueDate",
+        "paymentValue", "status", "provider", "apartmentsCode", "pdfFile"
+})
 @Entity
 public class Bills implements Serializable {
 

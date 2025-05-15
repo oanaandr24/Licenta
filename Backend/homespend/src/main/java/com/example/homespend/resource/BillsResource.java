@@ -88,4 +88,10 @@ public class BillsResource {
         return billsService.getBillsByApartmentsCode(code);
     }
 
+    @PatchMapping("/remove-pdf/id/{id}")
+    public ResponseEntity<Bills> removePdfFile(@PathVariable Long id) {
+        Bills updatedBill = billsService.removePdfFile(id);
+        return new ResponseEntity<>(updatedBill, HttpStatus.OK);
+    }
+    
 }

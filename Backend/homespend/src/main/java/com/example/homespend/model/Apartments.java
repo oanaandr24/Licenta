@@ -14,6 +14,7 @@ public class Apartments implements Serializable {
     private String address_street;
     private String address_block;
     private String surface;
+    @Column(nullable = false, unique = true)
     private String apartmentsCode;
     private String administrator;
     private String administratorCode;

@@ -46,9 +46,15 @@ public class UserResource {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        User updateUser = userService.updateUser(user);
+    @PatchMapping("/patch/id/{id}")
+    public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user) {
+        User updateUser = userService.updateUserById(id, user);
+        return new ResponseEntity<>(updateUser, HttpStatus.OK);
+    }
+
+    @PatchMapping("/patch/email/{email}")
+    public ResponseEntity<User> updateUserByEmail(@PathVariable String email, @RequestBody User user) {
+        User updateUser = userService.updateUserByEmail(email, user);
         return new ResponseEntity<>(updateUser, HttpStatus.OK);
     }
 

@@ -6,8 +6,11 @@ import com.example.homespend.repo.ApartmentsRepo;
 import com.example.homespend.repo.BillsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BillsService {
@@ -31,7 +34,7 @@ public class BillsService {
         }
         Apartments apartment = apartmentsRepo.findByApartmentsCode(apartmentsCode).orElseThrow(() -> new RuntimeException("Apartment code not found"));
 
-        if (bill.getAmountConsumed() == null)
+        if (bill.getAmountConsumed() == null && bill.getOldIndex() != null && bill.getNewIndex() != null)
         {
             bill.setAmountConsumed(bill.getNewIndex()-bill.getOldIndex());
         }
@@ -47,9 +50,28 @@ public class BillsService {
         return billsRepo.findAll();
     }
 
-    public Bills updateBills(Bills bills) {
-        return billsRepo.save(bills);
-    }
+    /*public Bills updateBillsById(Long id, Bills bill) {
+        Optional<Bills> optionalExistingBill = billsRepo.findBillsById(id);
+        if (optionalExistingBill.isEmpty()) {
+            throw new RuntimeException("Bill not found with id: " + id);
+        }
+        Bills existingBill = optionalExistingBill.get();
+
+        if (bill.getType() != null) existingBill.setType(bill.getType());
+        if (bill.getNumber() != null) existingBill.setNumber(bill.getNumber());
+        if (bill.getOldIndex() != null) existingBill.setOldIndex(bill.getOldIndex());
+        if (bill.getNewIndex() != null) existingBill.setNewIndex(bill.getNewIndex());
+        if (bill.getAmountConsumed() != null) existingBill.setAmountConsumed(bill.getAmountConsumed());
+        if (bill.getInvoiceDate() != null) existingBill.setInvoiceDate(bill.getInvoiceDate());
+        if (bill.getDueDate() != null) existingBill.setDueDate(bill.getDueDate());
+        if (bill.getPaymentValue() != null) existingBill.setPaymentValue(bill.getPaymentValue());
+        if (bill.getStatus() != null) existingBill.setStatus(bill.getStatus());
+        if (bill.getProvider() != null) existingBill.setProvider(bill.getProvider());
+        if (bill.getPdfFile() != null) existingBill.setPdfFile(bill.getPdfFile());
+        if (bill.getApartmentsCode() != null) throw new RuntimeException("Action not allowed!");
+
+        return billsRepo.save(existingBill);
+    }*/
 
     public void deleteBillsByApartmentCode(String apartmentsCode) {
         billsRepo.deleteByApartmentsCode(apartmentsCode);
@@ -62,4 +84,44 @@ public class BillsService {
     public List<Bills> getBillsByApartmentsCode(String code) {
         return billsRepo.findBillsByApartmentsCode(code);
     }
+
+    public Bills updateBillsById(Long id, Bills updatedFields, MultipartFile pdfFile) {
+        Bills existingBill = billsRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Bill not found"));
+        if (updatedFields != null) {
+            if (updatedFields.getType() != null)
+                existingBill.setType(updatedFields.getType());
+            if (updatedFields.getNumber() != null)
+                existingBill.setNumber(updatedFields.getNumber());
+            if (updatedFields.getOldIndex() != null)
+                existingBill.setOldIndex(updatedFields.getOldIndex());
+            if (updatedFields.getNewIndex() != null)
+                existingBill.setNewIndex(updatedFields.getNewIndex());
+            if (updatedFields.getAmountConsumed() != null)
+                existingBill.setAmountConsumed(updatedFields.getAmountConsumed());
+            if (updatedFields.getInvoiceDate() != null)
+                existingBill.setInvoiceDate(updatedFields.getInvoiceDate());
+            if (updatedFields.getDueDate() != null)
+                existingBill.setDueDate(updatedFields.getDueDate());
+            if (updatedFields.getPaymentValue() != null)
+                existingBill.setPaymentValue(updatedFields.getPaymentValue());
+            if (updatedFields.getStatus() != null)
+                existingBill.setStatus(updatedFields.getStatus());
+            if (updatedFields.getProvider() != null)
+                existingBill.setProvider(updatedFields.getProvider());
+            if (updatedFields.getApartmentsCode() != null)
+                throw new RuntimeException("Action not allowed!");
+        }
+
+        if (pdfFile != null && !pdfFile.isEmpty()) {
+            try {
+                existingBill.setPdfFile(pdfFile.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException("Error reading PDF file", e);
+            }
+        }
+
+        return billsRepo.save(existingBill);
+    }
+
 }

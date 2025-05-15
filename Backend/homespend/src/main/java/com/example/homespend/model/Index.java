@@ -3,8 +3,8 @@ package com.example.homespend.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-
 @Entity
+@Table(name = "index_table")
 public class Index implements Serializable {
 
     @Id

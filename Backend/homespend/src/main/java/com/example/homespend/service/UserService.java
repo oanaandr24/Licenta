@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,6 +20,7 @@ public class UserService {
     public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
+
     public User addUser(User user) {
          user.setUserCode(UUID.randomUUID().toString());
          try {
@@ -31,24 +33,58 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid enum value: " + user.getRole());
         }
     }
+
     public User findByEmail(String email) {
         return userRepo.findUserByEmail(email);
     }
+
     public List<User> findAllUsers() {
          return userRepo.findAll();
     }
-    public User updateUser(User user) {
-        return userRepo.save(user);
+
+    public User updateUserById(Long id, User user) {
+        Optional<User> optionalExistingUser = userRepo.findById(id);
+        if (optionalExistingUser.isEmpty()) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+        User existingUser = optionalExistingUser.get();
+        User updatedUser = updateFields(user, existingUser);
+
+        return userRepo.save(updatedUser);
     }
+
+    public User updateUserByEmail(String email, User user) {
+        Optional<User> optionalExistingUser = Optional.ofNullable(userRepo.findUserByEmail(email));
+        if (optionalExistingUser.isEmpty()) {
+            throw new RuntimeException("User not found with email: " + email);
+        }
+        User existingUser = optionalExistingUser.get();
+        User updatedUser = updateFields(user, existingUser);
+
+        return userRepo.save(updatedUser);
+    }
+
     public User findUserById(Long id) {
          return userRepo.findUserById(id)
                  .orElseThrow(()-> new UserNotFoundException("User by id" + id + "not found"));
     }
+
     public void deleteUser(Long id) {
          userRepo.deleteUserById(id);
     }
+
     public void deleteUserByUserCode(String userCode) {
          userRepo.deleteUserByUserCode(userCode);
+    }
+
+    private User updateFields(User newUser, User existingUser) {
+        if (newUser.getName() != null) existingUser.setName(newUser.getName());
+        if (newUser.getEmail() != null) existingUser.setEmail(newUser.getEmail());
+        if (newUser.getPassword() != null) existingUser.setPassword(newUser.getPassword());
+        if (newUser.getPhone() != null) existingUser.setPhone(newUser.getPhone());
+        if (newUser.getRole() != null) existingUser.setRole(newUser.getRole());
+        if (newUser.getUserCode() != null) throw new RuntimeException("Action not allowed!");
+        return existingUser;
     }
 }
 

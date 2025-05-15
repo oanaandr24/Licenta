@@ -20,13 +20,16 @@ public class Bills implements Serializable {
     private String paymentValue;
     private String status;
     private String provider;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] pdfFile;
     private String apartmentsCode;
 
 
     public Bills() {
     }
 
-    public Bills(Long id, String apartmentsCode, String paymentValue, String dueDate, String invoiceDate, Float oldIndex, String number, String type, Float amountConsumed, Float newIndex, String status, String provider) {
+    public Bills(Long id, String apartmentsCode, String paymentValue, String dueDate, String invoiceDate, Float oldIndex, String number, String type, Float amountConsumed, Float newIndex, String status, String provider, byte[] pdfFile) {
         this.id = id;
         this.apartmentsCode = apartmentsCode;
         this.paymentValue = paymentValue;
@@ -39,6 +42,7 @@ public class Bills implements Serializable {
         this.newIndex = newIndex;
         this.provider = provider;
         this.status = status;
+        this.pdfFile = pdfFile;
     }
 
     public Long getId() {
@@ -135,6 +139,14 @@ public class Bills implements Serializable {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public byte[] getPdfFile() {
+        return pdfFile;
+    }
+
+    public void setPdfFile(byte[] pdfFile) {
+        this.pdfFile = pdfFile;
     }
 
     @Override

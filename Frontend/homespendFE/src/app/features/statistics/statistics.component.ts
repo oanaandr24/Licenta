@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
+import { HeaderComponent } from '../../core/header/header.component';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
-import { BillsService } from '../bills.service';
 import { ChartModule } from 'primeng/chart';
-import { Bills } from '../bills';
+import { Bills } from '../../utils/interfaces/bills';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
+import { BillsService } from 'src/app/utils/services/bills.service';
 
 @Component({
   selector: 'app-statistics',

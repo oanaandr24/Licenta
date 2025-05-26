@@ -60,19 +60,19 @@ export class BillsComponent implements OnInit {
 }
 */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { BillsService } from 'src/app/bills.service';
-import { Bills } from 'src/app/bills';
+import { Bills } from 'src/app/utils/interfaces/bills';
 import { Table, TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../header/header.component';
+import { HeaderComponent } from '../../core/header/header.component';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { BillsService } from 'src/app/utils/services/bills.service';
 
 @Component({
   selector: 'app-bills',

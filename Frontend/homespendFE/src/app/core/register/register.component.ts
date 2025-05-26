@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { UserService } from '../user.service';
+import { UserService } from 'src/app/utils/services/user.service';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Apartments } from '../apartments';
-import { ApartmentService } from '../apartments.service';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from '../login/login.component';  
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HeaderComponent } from '../header/header.component';
+import { HeaderComponent } from 'src/app/core/header/header.component';
+import { Apartments } from 'src/app/utils/interfaces/apartments';
+import { ApartmentService } from 'src/app/utils/services/apartments.service';
 
 @Component({
   selector: 'app-apartments',

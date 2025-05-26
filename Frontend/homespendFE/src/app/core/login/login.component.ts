@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { UserService } from 'src/app/utils/services/user.service';
 
 @Component({
   selector: 'app-login',

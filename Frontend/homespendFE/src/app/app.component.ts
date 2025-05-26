@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { User } from './user';
-import { UserService } from './user.service';
+import { User } from './utils/interfaces/user';
+import { UserService } from './utils/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';

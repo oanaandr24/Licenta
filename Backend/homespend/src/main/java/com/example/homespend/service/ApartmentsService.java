@@ -37,7 +37,7 @@ public class ApartmentsService {
         apartment.setUserCode(user.getUserCode());
         String userCode = apartment.getUserCode();
         if(apartment.getAdministratorCode() == null){
-            throw new RuntimeException("Administrator code is null");
+            apartment.setAdministratorCode("CASA");
         }
         if(userCode == null) {
              throw new RuntimeException("User not found");

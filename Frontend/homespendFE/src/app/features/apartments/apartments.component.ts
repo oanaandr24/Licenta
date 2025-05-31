@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from 'src/app/core/header/header.component';
 import { Apartments } from 'src/app/utils/interfaces/apartments';
 import { ApartmentService } from 'src/app/utils/services/apartments.service';
+import { MenuComponent } from 'src/app/core/menu/menu.component';
+import { AddHouseModalComponent } from '../modals/add-house-modal/add-house-modal.component';
 
 @Component({
   selector: 'app-apartments',
@@ -13,7 +15,9 @@ import { ApartmentService } from 'src/app/utils/services/apartments.service';
     CommonModule,
     CardModule,
     ButtonModule,
-    HeaderComponent
+    HeaderComponent,
+    MenuComponent,
+    AddHouseModalComponent
   ]],
   templateUrl: './apartments.component.html',
   styleUrl: './apartments.component.scss'
@@ -22,6 +26,7 @@ export class ApartmentsComponent implements OnInit {
 
   apartments: Apartments[] = [];
   userCode!: string;
+  displayModal: boolean = false
 
   constructor(
     private apartmentService: ApartmentService,
@@ -30,7 +35,6 @@ export class ApartmentsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    
     this.userCode = localStorage.getItem('userCode')!;
     if (this.userCode) {
       this.apartmentService.getApartmentsByUserCode(this.userCode).subscribe({
@@ -45,10 +49,13 @@ export class ApartmentsComponent implements OnInit {
     }
   }
 
-  test(ap: any) {
+  showBills(ap: any) {
     this.router.navigate(['bills'], {
       state: {ap: ap}
     })
   }
 
+  addHouse() {
+    this.displayModal = true;
+  }
 }

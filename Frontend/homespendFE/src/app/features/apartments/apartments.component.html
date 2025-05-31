@@ -1,24 +1,44 @@
 <app-header></app-header>
 <div class="page-container">
-<h2>Apartamentele Mele</h2>
-<div *ngIf="apartments.length > 0; else noApartments"  class="apartamente">
-  <div *ngFor="let ap of apartments">
-    <div (click)="test(ap)">
-    <p-card [header]="ap.apartamentsCode">
-        <p class="m-0">
-          {{ ap.address_city }}, {{ ap.address_street }}, Bloc {{ ap.address_block }} – Suprafață: {{ ap.surface }}
-        </p>
-        <ng-template pTemplate="footer">
-          <div class="flex gap-3 mt-1">
-              <p-button label="Vezi apartament" class="w-full" styleClass="w-full" />
-          </div>
-      </ng-template>
-      </p-card>
+  <div class="flex align-items-center justify-content-between">
+    <h2>Apartamentele Mele</h2>
+    <p-button
+      label="Adaugă casă"
+      [style]="{ width: '12em' }"
+      (click)="addHouse()"
+      styleClass="addButton"
+    ></p-button>
+  </div>
+
+  <div *ngIf="apartments.length > 0; else noApartments" class="apartamente">
+    <div *ngFor="let ap of apartments">
+      <div (click)="showBills(ap)">
+        <p-card [header]="ap.apartmentsCode">
+          <p class="m-0">
+            {{ ap.address_city }}, {{ ap.address_street }}, <br />
+            Bloc {{ ap.address_block }} – Suprafață: {{ ap.surface }}
+          </p>
+          <ng-template pTemplate="footer">
+            <div class="flex gap-3 mt-1">
+              <p-button
+                label="Vezi apartament"
+                class="w-full"
+                styleClass="w-full"
+                styleClass="addButton"
+              />
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
     </div>
   </div>
+
+  <ng-template #noApartments>
+    <p>Nu ai niciun apartament asociat.</p>
+  </ng-template>
 </div>
 
-<ng-template #noApartments>
-  <p>Nu ai niciun apartament asociat.</p>
-</ng-template>
-  </div>
+<app-add-house-modal
+  [displayModal]="displayModal"
+  (displayModalChange)="displayModal = $event"
+></app-add-house-modal>

@@ -7,7 +7,7 @@
   }
   
   :host ::ng-deep {
-    .p-button {
+    .addButton {
     background: #69827a;
     border: 1px solid #69827a;
     }
@@ -16,5 +16,9 @@
         border-radius: 5px;
         box-shadow: 2px 2px 2px grey;
         width: 30em;
+    }
+
+    .addButton {
+      margin-right: 0.5em;
     }
   }

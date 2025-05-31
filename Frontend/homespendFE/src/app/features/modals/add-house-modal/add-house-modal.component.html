@@ -1,0 +1,38 @@
+<p-dialog
+  header="Adaugă Casă"
+  [(visible)]="displayModal"
+  modal="true"
+  [closable]="true"
+  [style]="{ width: '60vw', heigth: '30em' }"
+  [draggable]="false"
+  (onHide)="closeModal()"
+>
+  <form [formGroup]="houseForm">
+    <div class="flex flex-column justify-content-center gap-3">
+      <span>Oraș:</span>
+      <input
+        class="-mt-3"
+        type="text"
+        pInputText
+        formControlName="address_city"
+      />
+      <span>Strada:</span>
+      <input
+        class="-mt-3"
+        type="text"
+        pInputText
+        formControlName="address_street"
+      />
+      <span>Suprafață:</span>
+      <input class="-mt-3" type="text" pInputText formControlName="surface" />
+
+      <div class="flex justify-content-center">
+        <p-button
+          styleClass="editButton"
+          [label]="'Salvează'"
+          (click)="addHouse()"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</p-dialog>

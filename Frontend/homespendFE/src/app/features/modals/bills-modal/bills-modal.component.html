@@ -1,0 +1,89 @@
+<p-dialog
+  [header]="isEditing ? 'Detalii Factură' : 'Adaugă Factură'"
+  [(visible)]="displayModal"
+  modal="true"
+  [closable]="true"
+  [style]="{ width: '60vw', heigth: '30em' }"
+  [draggable]="false"
+  (onHide)="closeModal()"
+>
+  <form [formGroup]="billsForm">
+    <div class="flex flex-column justify-content-center gap-3">
+      <div class="flex flex-column gap-3">
+        <span>Adaugă factura în format PDF:</span>
+        <div class="flex align-items-center gap-3">
+          <p-fileUpload
+          class="-mt-1"
+            mode="basic"
+            name="demo[]"
+            chooseIcon="pi pi-upload"
+            accept="application/pdf*"
+            maxFileSize="1000000"
+            (onSelect)="onFileSelect($event)"
+            [auto]="true"
+            chooseLabel="Browse"
+            styleClass="editButton"
+          />
+          <div *ngIf="uploadedFileName" class="mt-2 text-sm text-green-600">
+            Fișier încărcat: {{ uploadedFileName }}
+          </div>
+        </div>
+      </div>
+      <span>Tip:</span>
+      <p-dropdown
+        class="-mt-3"
+        [options]="['apă', 'gaz', 'electricitate']"
+        formControlName="type"
+        placeholder="Alege tipul facturii"
+        name="selectedType"
+      ></p-dropdown>
+      <span>Număr:</span>
+      <input class="-mt-3" type="email" pInputText formControlName="number" />
+      <div class="flex align-items-center gap-3">
+        <span>Index Vechi:</span>
+        <input
+          style="width: 21em"
+          type="text"
+          pInputText
+          formControlName="oldIndex"
+        />
+        <span>Index Nou:</span>
+        <input
+          style="width: 21em"
+          type="text"
+          pInputText
+          formControlName="newIndex"
+        />
+      </div>
+      <span>Consum:</span>
+      <input class="-mt-3" type="text" pInputText formControlName="amountConsumed" />
+      <div class="flex align-items-center gap-3">
+        <span>Dată factură:</span>
+        <p-calendar
+          [style]="{ width: '21em' }"
+          formControlName="invoiceDate"
+          dateFormat="dd/mm/yy"
+          yearNavigator="true"
+          [yearRange]="'2000:2030'"
+        />
+        <span>Dată scadență:</span>
+        <p-calendar
+          [style]="{ width: '21em' }"
+          formControlName="dueDate"
+          dateFormat="dd/mm/yy"
+          yearNavigator="true"
+          [yearRange]="'2000:2030'"
+        />
+      </div>
+      <span>Valoare:</span>
+      <input class="-mt-3" type="text" pInputText formControlName="paymentValue" />
+      <div class="flex justify-content-center">
+        <p-button
+          styleClass="editButton"
+          [label]="isEditing ? 'Actualizează' : 'Salvează'"
+          (click)="toggleEdit()"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</p-dialog>

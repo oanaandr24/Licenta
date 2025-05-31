@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-header',
   imports: [
     ButtonModule,
-    AvatarModule
+    AvatarModule,
+    MenuComponent
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

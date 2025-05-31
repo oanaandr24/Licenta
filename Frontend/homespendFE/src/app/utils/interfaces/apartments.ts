@@ -5,7 +5,7 @@ export interface Apartments {
     address_street: string;
     address_block: string;
     surface: string;
-    apartamentsCode: string;
+    apartmentsCode: string;
     administrator: string;
     administratorCode: string;
   }

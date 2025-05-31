@@ -1,5 +1,5 @@
 export interface Bills {
-    id: number;
+    id?: number;
     type: string;
     number: string;
     oldIndex: any;
@@ -9,5 +9,6 @@ export interface Bills {
     dueDate: string;
     paymentValue: string;
     apartmentsCode: string;
-    status: string;
+    status?: string;
+    pdf?: any;
 }

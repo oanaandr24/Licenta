@@ -36,6 +36,12 @@ public class ApartmentsResource {
         return ResponseEntity.ok(apartments);
     }
 
+    @GetMapping("/admin/{administratorCode}")
+    public ResponseEntity<List<Apartments>> getAllApartmentsByAdministratorCode(@PathVariable String administratorCode) {
+        List<Apartments> apartments = apartmentsService.getAllApartmentsByAdministratorCode(administratorCode);
+        return ResponseEntity.ok(apartments);
+    }
+
     @PostMapping("/add/{email}")
     public ResponseEntity<Apartments> create(@PathVariable String email, @RequestBody Apartments apartment) {
         return ResponseEntity.ok(apartmentsService.createApartmentForUser(email, apartment));

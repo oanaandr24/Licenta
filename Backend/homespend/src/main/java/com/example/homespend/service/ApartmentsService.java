@@ -50,8 +50,11 @@ public class ApartmentsService {
     }
 
    public List<Apartments> getAllApartmentsByUserCode(String userCode) {
-
        return apartmentsRepo.findByUserCode(userCode);
+   }
+
+   public List<Apartments> getAllApartmentsByAdministratorCode(String administratorCode) {
+        return apartmentsRepo.findByAdministratorCode(administratorCode);
    }
 
    public void deleteApartmentsByUserCode(String userCode) {

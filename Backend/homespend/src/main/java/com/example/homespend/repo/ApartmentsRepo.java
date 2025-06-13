@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface ApartmentsRepo extends JpaRepository<Apartments, Long> {
 
     List<Apartments> findByUserCode(String userCode);
+    List<Apartments> findByAdministratorCode(String administratorCode);
     void deleteByUserCode(String userCode);
     void deleteByApartmentsCode(String apartmentsCode);
     Optional<Apartments> findByApartmentsCode(String apartmentsCode);

@@ -21,6 +21,17 @@ export class BillsService {
   }
 
   updateBill(id: number, formData: FormData) {
-    return this.http.patch<Bills>(`${this.apiServerUrl}/bills/patch/id/${id}`, formData);
+    return this.http.patch<Bills>(
+      `${this.apiServerUrl}/bills/patch/id/${id}`,
+      formData
+    );
+  }
+
+  deleteBill(id: number) {
+    return this.http.delete<Bills>(`${this.apiServerUrl}/bills/delete/${id}`);
+  }
+
+  addIndex(data: {value: number, apartmentsCode: any, type: any}) {
+    return this.http.post<Bills[]>(`${this.apiServerUrl}/index/add`, data);
   }
 }

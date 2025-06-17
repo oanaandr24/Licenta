@@ -18,7 +18,20 @@ export class ApartmentService {
 
   addHouseByEmail(email: any, house: any): Observable<Apartments[]> {
     return this.http.post<Apartments[]>(
-      `${this.apiServerUrl}/apartments/add/${email}`, house
+      `${this.apiServerUrl}/apartments/add/${email}`,
+      house
+    );
+  }
+
+  getApartmentsByUserRole(adminCode: string): Observable<Apartments[]> {
+    return this.http.get<Apartments[]>(
+      `${this.apiServerUrl}/apartments/admin/${adminCode}`
+    );
+  }
+
+    addApartmentByAdmin(email: string, apartment: any): Observable<Apartments[]> {
+    return this.http.post<Apartments[]>(
+      `${this.apiServerUrl}/apartments/add/${email}`, apartment
     );
   }
 }

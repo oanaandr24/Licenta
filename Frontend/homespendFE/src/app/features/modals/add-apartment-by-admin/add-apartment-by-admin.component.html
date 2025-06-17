@@ -1,0 +1,49 @@
+<p-dialog
+  header="Alocă Apartament"
+  [(visible)]="displayModalAddApartment"
+  modal="true"
+  [closable]="true"
+  [style]="{ width: '60vw', heigth: '30em' }"
+  [draggable]="false"
+  (onHide)="closeModal()"
+>
+  <div class="flex flex-column justify-content-center">
+    <span>Email User:</span>
+    <input pInputText type="text" [(ngModel)]="userEmail" />
+  </div>
+  <form [formGroup]="apartmentForm">
+    <div class="flex flex-column justify-content-center gap-3 mt-3">
+      <span>Oraș:</span>
+      <input
+        class="-mt-3"
+        type="text"
+        pInputText
+        formControlName="address_city"
+      />
+      <span>Strada:</span>
+      <input
+        class="-mt-3"
+        type="text"
+        pInputText
+        formControlName="address_street"
+      />
+      <span>Bloc:</span>
+      <input
+        class="-mt-3"
+        type="text"
+        pInputText
+        formControlName="address_block"
+      />
+      <span>Suprafață:</span>
+      <input class="-mt-3" type="text" pInputText formControlName="surface" />
+
+      <div class="flex justify-content-center">
+        <p-button
+          styleClass="editButton"
+          [label]="'Salvează'"
+          (click)="addApartmentToUser()"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</p-dialog>

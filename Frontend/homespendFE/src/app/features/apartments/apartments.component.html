@@ -1,27 +1,51 @@
 <app-header></app-header>
 <div class="page-container">
   <div class="flex align-items-center justify-content-between">
-    <h2>Apartamentele Mele</h2>
-    <p-button
-      label="Adaugă casă"
-      [style]="{ width: '12em' }"
-      (click)="addHouse()"
-      styleClass="addButton"
-    ></p-button>
+    <h2>Apartamente</h2>
+    <div *ngIf="userRole !== 'ADMIN'">
+      <p-button
+        label="Adaugă casă"
+        [style]="{ width: '12em' }"
+        (click)="addHouse()"
+        styleClass="addButton"
+      ></p-button>
+    </div>
+    <div *ngIf="userRole === 'ADMIN'">
+      <p-button
+        label="Alocă apartament"
+        [style]="{ width: '12em' }"
+        (click)="addApartmentToUser()"
+        styleClass="addButton"
+      ></p-button>
+    </div>
   </div>
 
   <div *ngIf="apartments.length > 0; else noApartments" class="apartamente">
     <div *ngFor="let ap of apartments">
       <div (click)="showBills(ap)">
-        <p-card [header]="ap.apartmentsCode">
+        <p-card>
+          <ng-template pTemplate="header" let-header>
+            <div class="mt-3 ml-4 -mb-2">
+              <i
+               style="font-size: 25px;"
+                *ngIf="ap.administratorCode === 'CASA'"
+                class="pi pi-home"
+              ></i>
+               <i
+                style="font-size: 25px;"
+                *ngIf="ap.administratorCode !== 'CASA'"
+                class="pi pi-building"
+              ></i>
+            </div>
+          </ng-template>
           <p class="m-0">
-            {{ ap.address_city }}, {{ ap.address_street }}, <br />
-            Bloc {{ ap.address_block }} – Suprafață: {{ ap.surface }}
+            Oraș: {{ ap.address_city }} – Strada: {{ ap.address_street }} <br />
+            Bloc: {{ ap.address_block }} – Suprafață: {{ ap.surface }}
           </p>
           <ng-template pTemplate="footer">
             <div class="flex gap-3 mt-1">
               <p-button
-                label="Vezi apartament"
+                [label]="ap.administratorCode === 'CASA' ? 'Vezi casa' : 'Vezi apartament'"
                 class="w-full"
                 styleClass="w-full"
                 styleClass="addButton"
@@ -42,3 +66,9 @@
   [displayModal]="displayModal"
   (displayModalChange)="displayModal = $event"
 ></app-add-house-modal>
+
+<app-add-apartment-by-admin
+  [displayModalAddApartment]="displayModalAddApartment"
+  (displayModalChange)="displayModalAddApartment = $event"
+  (reloadTable)="reloadTable($event)"
+></app-add-apartment-by-admin>

@@ -15,6 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/utils/services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +27,7 @@ import { UserService } from 'src/app/utils/services/user.service';
     ReactiveFormsModule,
     InputTextModule,
     ToastModule,
+    CommonModule
   ],
   providers: [MessageService],
   templateUrl: './profile.component.html',
@@ -39,6 +41,7 @@ export class ProfileComponent {
   role: any = '';
 
   isEditing = false;
+  userRole: any = ''
 
   constructor(
     private router: Router,
@@ -59,7 +62,7 @@ export class ProfileComponent {
 
   ngOnInit() {
     this.userId = sessionStorage.getItem('id');
-
+    this.userRole = sessionStorage.getItem('role')
     this.getUserData();
   }
 

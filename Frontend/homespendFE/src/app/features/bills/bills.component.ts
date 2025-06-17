@@ -47,10 +47,15 @@ export class BillsComponent implements OnInit {
   userCode: string = '';
   apartments: any[] = [];
   apCode: string = '';
+  userRole: any = '';
 
   selectedBill: Bills | null = null;
   displayModal: boolean = false;
   showNoBillsMessage: boolean = false;
+
+  displayIndexModal: boolean = false;
+  selectedType: any = '';
+  newIndex!: any;
 
   constructor(
     private billsService: BillsService,
@@ -59,6 +64,8 @@ export class BillsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.userRole = sessionStorage.getItem('role');
+
     if (window.history.state['ap'] !== undefined) {
       this.ap = window.history.state['ap'];
       this.apCode = this.ap.apartmentsCode;
@@ -68,19 +75,36 @@ export class BillsComponent implements OnInit {
     }
     this.userCode = localStorage.getItem('userCode')!;
     if (this.userCode) {
-      this.apartmentService.getApartmentsByUserCode(this.userCode).subscribe({
-        next: (response) => {
-          console.log('Apartamente:', response);
+      if (this.userRole === 'LOCATAR') {
+        this.apartmentService.getApartmentsByUserCode(this.userCode).subscribe({
+          next: (response) => {
+            console.log('Apartamente:', response);
 
-          this.apartments = response.map((apt) => ({
-            label: apt.apartmentsCode,
-            value: apt.apartmentsCode,
-          }));
-        },
-        error: (error) => {
-          console.error('Eroare:', error);
-        },
-      });
+            this.apartments = response.map((apt) => ({
+              label: apt.address_city + ',' + apt.address_street + ',' + apt.address_block,
+              value: apt.apartmentsCode,
+            }));
+          },
+          error: (error) => {
+            console.error('Eroare:', error);
+          },
+        });
+      }
+      if (this.userRole === 'ADMIN') {
+        this.apartmentService.getApartmentsByUserRole(this.userCode).subscribe({
+          next: (response) => {
+            console.log('Apartamente:', response);
+
+            this.apartments = response.map((apt) => ({
+              label: apt.address_city + ',' + apt.address_street + ',' + apt.address_block,
+              value: apt.apartmentsCode,
+            }));
+          },
+          error: (error) => {
+            console.error('Eroare:', error);
+          },
+        });
+      }
     }
   }
 
@@ -120,6 +144,11 @@ export class BillsComponent implements OnInit {
     this.displayModal = true;
   }
 
+  editBill(bill: any) {
+    this.selectedBill = bill;
+    this.openModal();
+  }
+
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt1!.filterGlobal(
       ($event.target as HTMLInputElement).value,
@@ -157,9 +186,33 @@ export class BillsComponent implements OnInit {
     URL.revokeObjectURL(blobUrl);
   }
 
+  deleteBill(id: any) {
+    this.billsService.deleteBill(id).subscribe((data) => {
+      this.reloadTable(true);
+    });
+  }
+
+  addIndex() {
+    this.displayIndexModal = true;
+  }
+
+  sendIndex() {
+    console.log(this.newIndex);
+    const requestBody = {
+      type: this.selectedType,
+      value: this.newIndex,
+      apartmentsCode: this.apCode,
+    };
+
+    this.billsService.addIndex(requestBody).subscribe((data) => {
+      this.displayIndexModal = false;
+      (this.selectedType = ''), (this.newIndex = '');
+    });
+  }
+
   reloadTable(event: any) {
-    if(event) {
-       this.loadBills(this.apCode);
+    if (event) {
+      this.loadBills(this.apCode);
     }
   }
 

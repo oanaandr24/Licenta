@@ -95,7 +95,6 @@ export class BillsModalComponent {
         invoiceDate: this.formatDateToISODate(raw.invoiceDate),
         dueDate: this.formatDateToISODate(raw.dueDate),
         paymentValue: raw.paymentValue,
-        apartmentsCode: this.apCode,
       })
     );
 

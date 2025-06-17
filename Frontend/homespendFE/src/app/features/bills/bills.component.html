@@ -20,13 +20,23 @@
           (ngModelChange)="onApSelection()"
         ></p-dropdown>
       </div>
-      <div *ngIf="apCode">
-        <p-button
-          label="Adaugă factură"
-          [style]="{ width: '12em' }"
-          (click)="addBill()"
-          styleClass="addButton"
-        ></p-button>
+      <div *ngIf="apCode" class="mr-3 flex align-items-center">
+        <div *ngIf="userRole !== 'ADMIN'">
+          <p-button
+            label="Adaugă index"
+            [style]="{ width: '9em', 'margin-right': '0.5em' }"
+            (click)="addIndex()"
+            styleClass="addButton"
+          ></p-button>
+        </div>
+        <div>
+          <p-button
+            label="Adaugă factură"
+            [style]="{ width: '9em' }"
+            (click)="addBill()"
+            styleClass="addButton"
+          ></p-button>
+        </div>
       </div>
     </div>
     <div *ngIf="bills.length > 0">
@@ -57,6 +67,7 @@
                   type="text"
                   (input)="applyFilterGlobal($event, 'contains')"
                   placeholder="Caută"
+                  style="width: 18.5em"
                 />
               </p-iconField>
             </div>
@@ -64,21 +75,22 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="type">
+            <th style="width: 10%" pSortableColumn="type">
               Tip <p-sortIcon field="type"></p-sortIcon>
             </th>
-            <th pSortableColumn="dueDate">
+            <th style="width: 10%" pSortableColumn="dueDate">
               Scadență <p-sortIcon field="dueDate"></p-sortIcon>
             </th>
-            <th pSortableColumn="paymentValue">
+            <th style="width: 10%" pSortableColumn="paymentValue">
               Valoare <p-sortIcon field="paymentValue"></p-sortIcon>
             </th>
-            <th pSortableColumn="status">
+            <th style="width: 10%" pSortableColumn="status">
               Status <p-sortIcon field="status"></p-sortIcon>
             </th>
-            <th pSortableColumn="pdfFile">
+            <th style="width: 10%" pSortableColumn="pdfFile">
               Factură PDF <p-sortIcon field="pdfFile"></p-sortIcon>
             </th>
+            <th style="width: 5%"></th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-bill>
@@ -98,11 +110,32 @@
                 type="button"
                 class="p-button-sm"
                 [outlined]="true"
+                [style]="{ width: '11em' }"
                 (click)="
                   downloadPdf(bill.pdfFile, 'factura_' + bill.number + '.pdf')
                 "
-              >Descarcă PDF <i class="pi pi-download" style="margin-left: 0.5em;"></i></p-button>
+                >Descarcă PDF
+                <i class="pi pi-download" style="margin-left: 0.5em"></i
+              ></p-button>
               <span *ngIf="!bill.pdfFile">N/A</span>
+            </td>
+            <td>
+              <p-button
+                type="button"
+                class="p-button-sm mr-1"
+                severity="warning"
+                (click)="editBill(bill)"
+              >
+                <i class="pi pi-file-edit"></i
+              ></p-button>
+              <p-button
+                type="button"
+                class="p-button-sm"
+                severity="danger"
+                (click)="deleteBill(bill.id)"
+              >
+                <i class="pi pi-trash"></i
+              ></p-button>
             </td>
           </tr>
         </ng-template>
@@ -112,6 +145,40 @@
       <strong>Nu există facturi aferente acestui apartament. </strong>
     </div>
   </p-card>
+
+  <p-dialog
+    header="Adaugă index"
+    [(visible)]="displayIndexModal"
+    modal="true"
+    [closable]="true"
+    [style]="{ width: '25vw', heigth: '30em' }"
+    [draggable]="false"
+  >
+    <div class="flex flex-column align-items-start gap-3">
+      <span>Tipul Facturii:</span>
+      <p-dropdown
+        [options]="['apă', 'gaz', 'electricitate']"
+        [(ngModel)]="selectedType"
+        placeholder="Alege tipul facturii"
+        name="selectedType"
+        [style]="{ width: '21em' }"
+      ></p-dropdown>
+      <span>Index Nou:</span>
+      <input
+        style="width: 21em"
+        type="text"
+        pInputText
+        [(ngModel)]="newIndex"
+      />
+    </div>
+    <div class="flex align-items-end justify-content-end mt-3">
+      <p-button
+        label="Trimite index"
+        (click)="sendIndex()"
+        styleClass="addButton"
+      ></p-button>
+    </div>
+  </p-dialog>
 
   <app-bills-modal
     [displayModal]="displayModal"

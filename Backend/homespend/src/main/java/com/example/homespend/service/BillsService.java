@@ -2,6 +2,7 @@ package com.example.homespend.service;
 
 import com.example.homespend.model.Apartments;
 import com.example.homespend.model.Bills;
+import com.example.homespend.model.Index;
 import com.example.homespend.repo.ApartmentsRepo;
 import com.example.homespend.repo.BillsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,5 +108,37 @@ public class BillsService {
                 .orElseThrow(() -> new RuntimeException("Bill not found"));
         bill.setPdfFile(null);
         return billsRepo.save(bill);
+    }
+
+    public Bills getBillForIndex(Index index) {
+        if(index.getApartmentsCode() == null || index.getType() == null || index.getValue() == null) {
+            return null;
+        }
+        else if(apartmentsRepo.findByApartmentsCode(index.getApartmentsCode()).isEmpty()){
+            return null;
+        }
+        //Apartments apartment = apartmentsRepo.findByApartmentsCode(index.getApartmentsCode()).orElseThrow(() -> new RuntimeException("Apartment code not found"));
+
+        List<Bills> billsList = billsRepo.findBillsByApartmentsCode(index.getApartmentsCode());
+
+        Bills latestBill = billsList.stream()
+                .filter(b -> index.getType().equalsIgnoreCase(b.getType())) // filtrare după tip
+                .max(Comparator.comparing(Bills::getNewIndex))        // max după newIndex
+                .orElse(null);
+        if (latestBill == null) {
+            return null;
+        }
+
+        Bills newBill = new Bills();
+
+        newBill.setType(index.getType());
+        newBill.setOldIndex(latestBill.getNewIndex());
+        newBill.setNewIndex(index.getValue());
+        newBill.setAmountConsumed(index.getValue() - latestBill.getNewIndex());
+        newBill.setStatus("SCADENT");
+        newBill.setProvider(latestBill.getProvider());
+        newBill.setApartmentsCode(index.getApartmentsCode());
+
+        return newBill;
     }
 }

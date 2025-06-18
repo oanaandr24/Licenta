@@ -1,9 +1,8 @@
 package com.example.homespend.resource;
 
 import com.example.homespend.model.Bills;
-import com.example.homespend.model.User;
+import com.example.homespend.model.Index;
 import com.example.homespend.service.BillsService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.http.*;
@@ -12,8 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/bills")
@@ -94,4 +91,10 @@ public class BillsResource {
         return new ResponseEntity<>(updatedBill, HttpStatus.OK);
     }
 
+    @GetMapping("/get-for-index")
+    public ResponseEntity<Bills> getBillForIndex(@RequestBody Index index) {
+        Bills bill = billsService.getBillForIndex(index);
+        if(bill == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(bill, HttpStatus.OK);
+    }
 }

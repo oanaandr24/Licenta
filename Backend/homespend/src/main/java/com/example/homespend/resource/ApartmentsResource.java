@@ -1,6 +1,7 @@
 package com.example.homespend.resource;
 
 import com.example.homespend.model.Apartments;
+import com.example.homespend.model.User;
 import com.example.homespend.repo.ApartmentsRepo;
 import com.example.homespend.service.ApartmentsService;
 import com.example.homespend.service.BillsService;
@@ -53,6 +54,12 @@ public class ApartmentsResource {
         apartmentsService.deleteApartmentByApartmentCode(apartmentCode);
         billsService.deleteBillsByApartmentCode(apartmentCode);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/patch/id/{id}")
+    public ResponseEntity<Apartments> updateApartmentById(@PathVariable Long id, @RequestBody Apartments apartment) {
+        Apartments updatedApartment = apartmentsService.updateApartmentById(id,apartment);
+        return new ResponseEntity<>(updatedApartment, HttpStatus.OK);
     }
 
 

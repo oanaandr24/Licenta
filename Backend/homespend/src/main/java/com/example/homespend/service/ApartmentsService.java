@@ -74,4 +74,28 @@ public class ApartmentsService {
         return apartmentsRepo.findByApartmentsCode(apartmentsCode);
    }
 
+    public Apartments updateApartmentById(Long id, Apartments apartment) {
+        Optional<Apartments> optionalExistingApartment = apartmentsRepo.findById(id);
+        if (optionalExistingApartment.isEmpty()) {
+            throw new RuntimeException("Apartment not found with id: " + id);
+        }
+        Apartments existingApartment = optionalExistingApartment.get();
+        Apartments updatedApartment = updateFields(apartment, existingApartment);
+
+        return apartmentsRepo.save(updatedApartment);
+    }
+
+    private Apartments updateFields(Apartments newApartment, Apartments existingApartment) {
+        if (newApartment.getaddress_city() != null) existingApartment.setaddress_city(newApartment.getaddress_city());
+        if (newApartment.getaddress_street() != null) existingApartment.setaddress_street(newApartment.getaddress_street());
+        if (newApartment.getaddress_block() != null) existingApartment.setaddress_block(newApartment.getaddress_block());
+        if (newApartment.getSurface() != null) existingApartment.setSurface(newApartment.getSurface());
+        if (newApartment.getAdministrator() != null) existingApartment.setAdministrator(newApartment.getAdministrator());
+
+        if (newApartment.getApartmentsCode() != null || newApartment.getUserCode() != null || newApartment.getAdministratorCode() != null) {
+            throw new RuntimeException("Patch not allowed!");
+        }
+        return existingApartment;
+    }
+
 }

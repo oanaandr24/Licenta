@@ -42,7 +42,7 @@ public class BillsService {
         }
         if (bill.getStatus() == null)
         {
-            bill.setStatus("NEPLATIT");
+            bill.setStatus("NEPLĂTIT");
         }
         return billsRepo.save(bill);
     }

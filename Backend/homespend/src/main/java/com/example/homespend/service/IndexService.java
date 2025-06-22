@@ -25,6 +25,15 @@ public class IndexService {
             throw new RuntimeException("Apartment code not found");
         }
         Apartments apartment = apartmentsRepo.findByApartmentsCode(apartmentsCode).orElseThrow(() -> new RuntimeException("Apartment code not found"));
+
+        List<Index> listIndex = indexRepo.findAllByApartmentsCode(apartmentsCode);
+
+        for (Index i : listIndex) {
+            if (i.getType().equals(index.getType())) {
+                indexRepo.deleteById(i.getId());
+            }
+        }
+
         return indexRepo.save(index);
     }
 

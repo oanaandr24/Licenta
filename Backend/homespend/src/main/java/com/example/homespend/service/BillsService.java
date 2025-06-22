@@ -72,12 +72,22 @@ public class BillsService {
                 existingBill.setType(updatedFields.getType());
             if (updatedFields.getNumber() != null)
                 existingBill.setNumber(updatedFields.getNumber());
-            if (updatedFields.getOldIndex() != null)
+            if (updatedFields.getOldIndex() != null) {
                 existingBill.setOldIndex(updatedFields.getOldIndex());
-            if (updatedFields.getNewIndex() != null)
+                existingBill.setAmountConsumed(existingBill.getNewIndex()- existingBill.getOldIndex());
+            }
+            if (updatedFields.getNewIndex() != null) {
                 existingBill.setNewIndex(updatedFields.getNewIndex());
-            if (updatedFields.getAmountConsumed() != null)
-                existingBill.setAmountConsumed(updatedFields.getAmountConsumed());
+                existingBill.setAmountConsumed(existingBill.getNewIndex()- existingBill.getOldIndex());
+            }
+            if (updatedFields.getAmountConsumed() != null) {
+                if(existingBill.getNewIndex() == null || existingBill.getOldIndex() == null) {
+                    existingBill.setAmountConsumed(updatedFields.getAmountConsumed());
+                }
+                else{
+                    existingBill.setAmountConsumed(existingBill.getNewIndex()- existingBill.getOldIndex());
+                }
+            }
             if (updatedFields.getInvoiceDate() != null)
                 existingBill.setInvoiceDate(updatedFields.getInvoiceDate());
             if (updatedFields.getDueDate() != null)

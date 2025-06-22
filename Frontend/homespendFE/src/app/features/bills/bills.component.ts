@@ -154,7 +154,7 @@ export class BillsComponent implements OnInit {
         return 'success';
       case 'NEACHITAT':
         return 'danger';
-      case 'NEPLATIT':
+      case 'NEPLĂTIT':
         return 'danger';
     }
     return 'success';
@@ -262,11 +262,11 @@ export class BillsComponent implements OnInit {
 
   changeStatus(bill: any) {
     const formatStatus = (status: string) => {
-      const emoji = status === 'NEPLATIT' ? '🔴' : '🟢';
+      const emoji = status === 'NEPLĂTIT' ? '🔴' : '🟢';
       return `${emoji} ${status}`;
     };
 
-    const newStatus = bill.status === 'NEPLATIT' ? 'ACHITAT' : 'NEPLATIT';
+    const newStatus = bill.status === 'NEPLĂTIT' ? 'ACHITAT' : 'NEPLĂTIT';
     const message = `Doriți să modificați statusul facturii din ${formatStatus(
       bill.status
     )} în ${formatStatus(newStatus)}?`;

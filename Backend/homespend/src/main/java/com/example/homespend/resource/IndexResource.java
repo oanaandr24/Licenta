@@ -20,6 +20,7 @@ public class IndexResource {
         this.indexService = indexService;
     }
 
+    @Transactional
     @PostMapping("/add")
     public ResponseEntity<Index> addIndex(@RequestBody Index index) {
         return new ResponseEntity<>(indexService.addIndex(index), HttpStatus.CREATED);

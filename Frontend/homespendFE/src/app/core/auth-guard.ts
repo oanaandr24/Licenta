@@ -6,9 +6,9 @@ import { AuthService } from './auth.service';
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(): boolean {
-    console.log(this.authService.isAuthenticated())
-    if (this.authService.isAuthenticated()) {
+   canActivate(): boolean {
+    // Check AuthService and localStorage
+    if (this.authService.isAuthenticated() || !!localStorage.getItem('authToken')) {
       return true;
     } else {
       this.router.navigate(['/login']);

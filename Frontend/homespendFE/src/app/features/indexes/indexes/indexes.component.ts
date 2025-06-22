@@ -17,29 +17,35 @@ import { HeaderComponent } from 'src/app/core/header/header.component';
 import { IndexesService } from 'src/app/utils/services/indexes.service';
 import { Bills } from 'src/app/utils/interfaces/bills';
 import { BillsModalComponent } from '../../modals/bills-modal/bills-modal.component';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-indexes',
   imports: [
-     TableModule,
-        CommonModule,
-        CardModule,
-        DialogModule,
-        HeaderComponent,
-        IconFieldModule,
-        InputIconModule,
-        InputTextModule,
-        TagModule,
-        ButtonModule,
-        DropdownModule,
-        FormsModule,
-        BillsModalComponent
+    TableModule,
+    CommonModule,
+    CardModule,
+    DialogModule,
+    HeaderComponent,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
+    TagModule,
+    ButtonModule,
+    DropdownModule,
+    FormsModule,
+    BillsModalComponent,
+    ToastModule,
+    ConfirmDialogModule,
   ],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './indexes.component.html',
-  styleUrl: './indexes.component.scss'
+  styleUrl: './indexes.component.scss',
 })
 export class IndexesComponent {
- @ViewChild('dt1') dt1: Table | undefined;
+  @ViewChild('dt1') dt1: Table | undefined;
 
   ap: any;
   selectedAp: any;
@@ -59,10 +65,11 @@ export class IndexesComponent {
   newIndex!: any;
 
   constructor(
-    private billsService: BillsService,
     private router: Router,
     private apartmentService: ApartmentService,
-    private indexesService: IndexesService
+    private indexesService: IndexesService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -118,21 +125,31 @@ export class IndexesComponent {
   }
 
   generateBill(index: any) {
+    this.selectedIndex = index;
     const requestBody = {
       id: index.id,
       type: index.type,
       value: index.value,
-      apartmentsCode: index.apartmentsCode
-    }
+      apartmentsCode: index.apartmentsCode,
+    };
 
-    console.log('req', requestBody)
-    this.indexesService.generateBill(requestBody).subscribe((data: Bills) => {
-      this.displayModal = true;
-      this.selectedBill = data
-      this.apCode = data.apartmentsCode
-    })
+    this.indexesService.generateBill(requestBody).subscribe((data: any) => {
+      if (data?.message !== 'No previous bills found!') {
+        this.displayModal = true;
+        this.selectedBill = data;
+        this.apCode = data.apartmentsCode;
+      } else {
+        this.confirmationService.confirm({
+          message: 'Nu au fost găsite facturi anterioare.',
+          header: 'Info',
+          icon: 'pi pi-info-circle',
+          rejectVisible: false,
+          acceptVisible: false,
+          accept: () => {}
+        });
+      }
+    });
   }
-
 
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt1!.filterGlobal(
@@ -141,10 +158,9 @@ export class IndexesComponent {
     );
   }
 
-
-  deleteBill(id: any) {
-    this.billsService.deleteBill(id).subscribe((data) => {
-      this.reloadTable(true);
+  deleteIndex(id: any) {
+    this.indexesService.deleteIndex(id).subscribe((data) => {
+      this.loadIndexes(this.apCode);
     });
   }
 
@@ -153,9 +169,7 @@ export class IndexesComponent {
   }
 
   reloadTable(event: any) {
-    if (event) {
-      this.loadIndexes(this.apCode);
-    }
+    this.deleteIndex(this.selectedIndex?.id);
   }
 
   onBack() {

@@ -128,15 +128,12 @@ export class StatisticsComponent {
     const now = new Date();
     const currentMonthBills = this.bills.filter((bill: any) => {
       const date = this.parseDateFromString(bill.invoiceDate);
-      console.log('date', bill.invoiceDate, date);
       return (
         date &&
         date.getMonth() === now.getMonth() &&
         date.getFullYear() === now.getFullYear()
       );
     });
-
-    console.log('current month', currentMonthBills);
 
     // Chart 1: by type (polar area)
     const groupedByType = currentMonthBills.reduce((acc: any, bill: any) => {
@@ -196,7 +193,6 @@ export class StatisticsComponent {
         tooltip: {
           callbacks: {
             label: (context: any) => {
-              console.log(context);
               let label = context.dataset.label || '';
 
               if (label) {
@@ -242,8 +238,6 @@ export class StatisticsComponent {
       if (this.selectedType && bill.type !== this.selectedType) return false;
 
       const invoiceDate = this.parseDateFromString(bill.invoiceDate);
-            console.log('bill', start, end, invoiceDate)
-
       if (!invoiceDate) return false; // or handle how you want to treat invalid dates
 
       if (start && invoiceDate < start) return false;

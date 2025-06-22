@@ -27,6 +27,12 @@ export class IndexesService {
 
   generateBill(index: any) {
     return this.http.post<Bills>(
-      `${this.apiServerUrl}/bills/get-for-index`, index);
+      `${this.apiServerUrl}/bills/get-for-index`,
+      index
+    );
+  }
+
+  deleteIndex(id: any) {
+    return this.http.delete<any>(`${this.apiServerUrl}/index/delete/${id}`);
   }
 }

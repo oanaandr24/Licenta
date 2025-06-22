@@ -55,6 +55,7 @@ export class BillsComponent implements OnInit {
   apartments: any[] = [];
   apCode: string = '';
   userRole: any = '';
+  adminCode: any = ''
 
   selectedBill: Bills | null = null;
   displayModal: boolean = false;
@@ -80,6 +81,7 @@ export class BillsComponent implements OnInit {
     if (window.history.state['ap'] !== undefined) {
       this.ap = window.history.state['ap'];
       this.apCode = this.ap.apartmentsCode;
+      this.adminCode = this.ap.administratorCode
       if (this.ap?.apartmentsCode) {
         this.loadBills(this.ap.apartmentsCode);
       }
@@ -98,7 +100,10 @@ export class BillsComponent implements OnInit {
                     apt.address_street +
                     ', ' +
                     apt.address_block,
-              value: apt.apartmentsCode,
+               value: {
+                apCode: apt.apartmentsCode,
+                adminCode: apt.administratorCode
+              }
             }));
           },
           error: (error) => {
@@ -119,7 +124,10 @@ export class BillsComponent implements OnInit {
                     apt.address_street +
                     ', ' +
                     apt.address_block,
-              value: apt.apartmentsCode,
+              value: {
+                apCode: apt.apartmentsCode,
+                adminCode: apt.administratorCode
+              }
             }));
           },
           error: (error) => {
@@ -131,15 +139,15 @@ export class BillsComponent implements OnInit {
   }
 
   onApSelection() {
-    this.apCode = this.selectedAp;
-    this.loadBills(this.selectedAp);
+    this.apCode = this.selectedAp.apCode;
+    this.adminCode = this.selectedAp.adminCode
+    this.loadBills(this.selectedAp.apCode);
   }
 
   loadBills(code: string) {
     this.billsService.getBillsByApartment(code).subscribe({
       next: (data) => {
         this.bills = data;
-        console.log(this.bills);
         this.bills.length === 0
           ? (this.showNoBillsMessage = true)
           : (this.showNoBillsMessage = false);
@@ -162,7 +170,6 @@ export class BillsComponent implements OnInit {
 
   openModal() {
     this.displayModal = true;
-    console.log(this.selectedBill);
   }
 
   editBill(bill: any) {
@@ -247,7 +254,6 @@ export class BillsComponent implements OnInit {
   }
 
   sendIndex() {
-    console.log(this.newIndex);
     const requestBody = {
       type: this.selectedType,
       value: this.newIndex,

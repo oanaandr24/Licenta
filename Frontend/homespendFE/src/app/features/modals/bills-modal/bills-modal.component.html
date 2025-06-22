@@ -3,7 +3,7 @@
   [(visible)]="displayModal"
   modal="true"
   [closable]="true"
-  [style]="{ width: '60vw', heigth: '30em' }"
+  [style]="{ width: '46vw', heigth: '40em' }"
   [draggable]="false"
   (onHide)="closeModal()"
 >
@@ -13,7 +13,7 @@
         <span>Adaugă factura în format PDF:</span>
         <div class="flex align-items-center gap-3">
           <p-fileUpload
-          class="-mt-1"
+            class="-mt-1"
             mode="basic"
             name="demo[]"
             chooseIcon="pi pi-upload"
@@ -29,54 +29,87 @@
           </div>
         </div>
       </div>
-      <span>Tip:</span>
-      <p-dropdown
-        class="-mt-3"
-        [options]="['apă', 'gaz', 'electricitate']"
-        formControlName="type"
-        placeholder="Alege tipul facturii"
-        name="selectedType"
-      ></p-dropdown>
+      <div class="flex align-items-center gap-6 mt-3">
+        <div class="flex flex-column">
+          <span>Tip:</span>
+          <p-dropdown
+            [options]="['apă', 'gaz', 'electricitate']"
+            formControlName="type"
+            placeholder="Alege tipul facturii"
+            name="selectedType"
+            [editable]="isEditing === false ? true : false"
+            [style]="{ width: '19em' }"
+            (onChange)="checkType($event)"
+          ></p-dropdown>
+        </div>
+        <div class="flex flex-column">
+          <span>Provider:</span>
+          <input
+            style="width: 19em"
+            type="text"
+            pInputText
+            formControlName="provider"
+          />
+        </div>
+      </div>
       <span>Număr:</span>
       <input class="-mt-3" type="email" pInputText formControlName="number" />
-      <div class="flex align-items-center gap-3">
-        <span>Index Vechi:</span>
-        <input
-          style="width: 21em"
-          type="text"
-          pInputText
-          formControlName="oldIndex"
-        />
-        <span>Index Nou:</span>
-        <input
-          style="width: 21em"
-          type="text"
-          pInputText
-          formControlName="newIndex"
-        />
+      <div *ngIf="shouldShowIndexes || this.isEditing " class="flex align-items-center gap-6">
+        <div class="flex flex-column">
+          <span>Index Vechi:</span>
+          <input
+            style="width: 19em"
+            type="text"
+            pInputText
+            formControlName="oldIndex"
+          />
+        </div>
+        <div class="flex flex-column">
+          <span>Index Nou:</span>
+          <input
+            style="width: 19em"
+            type="text"
+            pInputText
+            formControlName="newIndex"
+          />
+        </div>
       </div>
       <span>Consum:</span>
-      <input class="-mt-3" type="text" pInputText formControlName="amountConsumed" />
-      <div class="flex align-items-center gap-3">
-        <span>Dată factură:</span>
-        <p-calendar
-          [style]="{ width: '21em' }"
-          formControlName="invoiceDate"
-          dateFormat="dd/mm/yy"
-          yearNavigator="true"
-          [yearRange]="'2000:2030'"
-        />
-        <span>Dată scadență:</span>
-        <p-calendar
-          [style]="{ width: '21em' }"
-          formControlName="dueDate"
-          dateFormat="dd/mm/yy"
-          yearNavigator="true"
-          [yearRange]="'2000:2030'"
-        />
+      <input
+        class="-mt-3"
+        type="text"
+        pInputText
+        formControlName="amountConsumed"
+      />
+      <div class="flex align-items-center gap-6">
+        <div class="flex flex-column">
+          <span>Dată factură:</span>
+          <p-calendar
+            [style]="{ width: '19em' }"
+            formControlName="invoiceDate"
+            dateFormat="dd/mm/yy"
+            yearNavigator="true"
+            [yearRange]="'2000:2030'"
+          />
+        </div>
+        <div class="flex flex-column">
+          <span>Dată scadență:</span>
+          <p-calendar
+            [style]="{ width: '19em' }"
+            formControlName="dueDate"
+            dateFormat="dd/mm/yy"
+            yearNavigator="true"
+            [yearRange]="'2000:2030'"
+          />
+        </div>
       </div>
       <span>Valoare:</span>
-      <input class="-mt-3" type="text" pInputText formControlName="paymentValue" />
+      <input
+        class="-mt-3"
+        type="text"
+        pInputText
+        formControlName="paymentValue"
+      />
       <div class="flex justify-content-center">
         <p-button
           styleClass="editButton"

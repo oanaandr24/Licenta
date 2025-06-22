@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/utils/services/user.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from 'src/app/core/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -47,7 +48,8 @@ export class ProfileComponent {
     private router: Router,
     private fb: FormBuilder,
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthService
   ) {
     this.profileForm = this.fb.group({
       id: [{ value: '', disabled: true }],
@@ -130,6 +132,7 @@ export class ProfileComponent {
   }
 
   logout() {
+    this.authService.logout()
     this.router.navigate(['login'])
   }
 

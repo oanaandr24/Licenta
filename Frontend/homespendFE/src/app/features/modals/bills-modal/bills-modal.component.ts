@@ -41,11 +41,12 @@ export class BillsModalComponent {
   @Input() selectedBill: Bills | null = null;
   @Input() apCode: string = '';
   @Output() displayModalChange = new EventEmitter<boolean>();
-  @Output() reloadTable = new EventEmitter<boolean>()
+  @Output() reloadTable = new EventEmitter<boolean>();
 
   uploadedFileName: string | null = null;
   billsForm!: FormGroup;
   isEditing: boolean = false;
+  shouldShowIndexes: boolean = false;
 
   constructor(private fb: FormBuilder, private billsService: BillsService) {
     this.billsForm = this.fb.group({
@@ -57,6 +58,7 @@ export class BillsModalComponent {
       invoiceDate: [{ value: '', disabled: false }],
       dueDate: [{ value: '', disabled: false }],
       paymentValue: [{ value: '', disabled: false }],
+      provider: [{ value: '', disabled: false }],
       apartmentsCode: [{ value: '' }],
       pdf: [],
     });
@@ -95,7 +97,8 @@ export class BillsModalComponent {
         invoiceDate: this.formatDateToISODate(raw.invoiceDate),
         dueDate: this.formatDateToISODate(raw.dueDate),
         paymentValue: raw.paymentValue,
-        apartmentsCode: this.selectedBill?.id ? null : this.apCode
+        provider: raw.provider,
+        apartmentsCode: this.selectedBill?.id ? null : this.apCode,
       })
     );
 
@@ -104,12 +107,16 @@ export class BillsModalComponent {
     }
     if (this.selectedBill && this.selectedBill.id) {
       this.billsService.updateBill(this.selectedBill.id, formData).subscribe({
-        next: () => { this.closeModal(), this.reloadTable.emit(true) },
+        next: () => {
+          this.closeModal(), this.reloadTable.emit(true);
+        },
         error: (err) => console.error('Update bill error:', err),
       });
     } else {
       this.billsService.addBill(formData).subscribe({
-        next: () => { this.closeModal(), this.reloadTable.emit(true) },
+        next: () => {
+          this.closeModal(), this.reloadTable.emit(true);
+        },
         error: (err) => console.error('Add bill error:', err),
       });
     }
@@ -141,20 +148,26 @@ export class BillsModalComponent {
   }
 
   private parseDate(dateStr: string): Date | null {
-  if (!dateStr) return null;
-  const parts = dateStr.split('/');
-  if (parts.length !== 3) return null;
+    if (!dateStr) return null;
+    const parts = dateStr.split('/');
+    if (parts.length !== 3) return null;
 
-  const day = +parts[0];
-  const month = +parts[1] - 1; // lunile în Date sunt 0-based
-  const year = +parts[2];
+    const day = +parts[0];
+    const month = +parts[1] - 1; // lunile în Date sunt 0-based
+    const year = +parts[2];
 
-  return new Date(year, month, day);
-}
+    return new Date(year, month, day);
+  }
+
+  checkType(event: any): void {
+    const selectedType = event.value;
+    this.shouldShowIndexes =
+     ['apă', 'gaz', 'electricitate'].includes(selectedType);
+  }
 
   closeModal() {
     this.displayModal = false;
-    this.uploadedFileName = ''
+    this.uploadedFileName = '';
     this.displayModalChange.emit(this.displayModal);
   }
 

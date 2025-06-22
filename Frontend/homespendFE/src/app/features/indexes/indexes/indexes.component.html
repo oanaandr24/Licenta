@@ -24,7 +24,6 @@
         [rows]="5"
         responsiveLayout="scroll"
         selectionMode="single"
-        [(selection)]="selectedIndex"
         [globalFilterFields]="['type', 'value']"
       >
         <ng-template pTemplate="caption">
@@ -80,40 +79,6 @@
       <strong>Nu există indexuri aferente acestui apartament. </strong>
     </div>
   </p-card>
-  <!-- 
-  <p-dialog
-    header="Adaugă index"
-    [(visible)]="displayIndexModal"
-    modal="true"
-    [closable]="true"
-    [style]="{ width: '25vw', heigth: '30em' }"
-    [draggable]="false"
-  >
-    <div class="flex flex-column align-items-start gap-3">
-      <span>Tipul Facturii:</span>
-      <p-dropdown
-        [options]="['apă', 'gaz', 'electricitate']"
-        [(ngModel)]="selectedType"
-        placeholder="Alege tipul facturii"
-        name="selectedType"
-        [style]="{ width: '21em' }"
-      ></p-dropdown>
-      <span>Index Nou:</span>
-      <input
-        style="width: 21em"
-        type="text"
-        pInputText
-        [(ngModel)]="newIndex"
-      />
-    </div>
-    <div class="flex align-items-end justify-content-end mt-3">
-      <p-button
-        label="Trimite index"
-        (click)="sendIndex()"
-        styleClass="addButton"
-      ></p-button>
-    </div>
-  </p-dialog>-->
 
   <app-bills-modal
     [displayModal]="displayModal"
@@ -122,4 +87,7 @@
     [selectedBill]="selectedBill"
     [apCode]="apCode"
   ></app-bills-modal>
+
+  <p-toast />
+<p-confirmDialog />
 </div>

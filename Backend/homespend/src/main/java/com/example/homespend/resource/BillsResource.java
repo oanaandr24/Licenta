@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/bills")
@@ -92,9 +94,17 @@ public class BillsResource {
     }
 
     @PostMapping("/get-for-index")
-    public ResponseEntity<Bills> getBillForIndex(@RequestBody Index index) {
+    public ResponseEntity<?> getBillForIndex(@RequestBody Index index) {
+        Map<String, String> response = new HashMap<>();
+        if(billsService.checkIfIndexIsValid(index) == false) {
+            response.put("message", "Bad Request");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
         Bills bill = billsService.getBillForIndex(index);
-        if(bill == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (bill == null) {
+            response.put("message", "No previous bills found!");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
         return new ResponseEntity<>(bill, HttpStatus.OK);
     }
 }

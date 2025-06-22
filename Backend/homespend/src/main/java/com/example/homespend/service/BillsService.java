@@ -111,12 +111,6 @@ public class BillsService {
     }
 
     public Bills getBillForIndex(Index index) {
-        if(index.getApartmentsCode() == null || index.getType() == null || index.getValue() == null) {
-            return null;
-        }
-        else if(apartmentsRepo.findByApartmentsCode(index.getApartmentsCode()).isEmpty()){
-            return null;
-        }
         //Apartments apartment = apartmentsRepo.findByApartmentsCode(index.getApartmentsCode()).orElseThrow(() -> new RuntimeException("Apartment code not found"));
 
         List<Bills> billsList = billsRepo.findBillsByApartmentsCode(index.getApartmentsCode());
@@ -140,5 +134,15 @@ public class BillsService {
         newBill.setApartmentsCode(index.getApartmentsCode());
 
         return newBill;
+    }
+
+    public boolean checkIfIndexIsValid(Index index){
+        if(index.getApartmentsCode() == null || index.getType() == null || index.getValue() == null) {
+            return false;
+        }
+        if(apartmentsRepo.findByApartmentsCode(index.getApartmentsCode()).isEmpty()){
+            return false;
+        }
+        return true;
     }
 }

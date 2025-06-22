@@ -70,8 +70,8 @@ export class BillsModalComponent {
         this.isEditing = true;
         this.billsForm.patchValue({
           ...this.selectedBill,
-          invoiceDate: new Date(this.selectedBill.invoiceDate),
-          dueDate: new Date(this.selectedBill.dueDate),
+          invoiceDate: this.parseDate(this.selectedBill.invoiceDate),
+          dueDate: this.parseDate(this.selectedBill.dueDate),
         });
       } else {
         this.isEditing = false;
@@ -95,13 +95,13 @@ export class BillsModalComponent {
         invoiceDate: this.formatDateToISODate(raw.invoiceDate),
         dueDate: this.formatDateToISODate(raw.dueDate),
         paymentValue: raw.paymentValue,
+        apartmentsCode: this.selectedBill?.id ? null : this.apCode
       })
     );
 
     if (raw.pdf) {
       formData.append('pdfFile', raw.pdf, this.uploadedFileName || 'file.pdf');
     }
-
     if (this.selectedBill && this.selectedBill.id) {
       this.billsService.updateBill(this.selectedBill.id, formData).subscribe({
         next: () => { this.closeModal(), this.reloadTable.emit(true) },
@@ -139,6 +139,18 @@ export class BillsModalComponent {
       fileReader.readAsArrayBuffer(file);
     }
   }
+
+  private parseDate(dateStr: string): Date | null {
+  if (!dateStr) return null;
+  const parts = dateStr.split('/');
+  if (parts.length !== 3) return null;
+
+  const day = +parts[0];
+  const month = +parts[1] - 1; // lunile în Date sunt 0-based
+  const year = +parts[2];
+
+  return new Date(year, month, day);
+}
 
   closeModal() {
     this.displayModal = false;

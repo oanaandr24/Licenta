@@ -91,7 +91,7 @@ public class BillsResource {
         return new ResponseEntity<>(updatedBill, HttpStatus.OK);
     }
 
-    @GetMapping("/get-for-index")
+    @PostMapping("/get-for-index")
     public ResponseEntity<Bills> getBillForIndex(@RequestBody Index index) {
         Bills bill = billsService.getBillForIndex(index);
         if(bill == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);

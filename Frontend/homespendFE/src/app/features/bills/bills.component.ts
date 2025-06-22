@@ -16,6 +16,10 @@ import { ApartmentService } from 'src/app/utils/services/apartments.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { BillsModalComponent } from '../modals/bills-modal/bills-modal.component';
+import { IndexesService } from 'src/app/utils/services/indexes.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-bills',
@@ -34,7 +38,10 @@ import { BillsModalComponent } from '../modals/bills-modal/bills-modal.component
     DropdownModule,
     FormsModule,
     BillsModalComponent,
+    ConfirmDialogModule,
+    ToastModule,
   ],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './bills.component.html',
   styleUrls: ['./bills.component.scss'],
 })
@@ -60,11 +67,15 @@ export class BillsComponent implements OnInit {
   constructor(
     private billsService: BillsService,
     private router: Router,
-    private apartmentService: ApartmentService
+    private apartmentService: ApartmentService,
+    private indexesService: IndexesService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
     this.userRole = sessionStorage.getItem('role');
+    this.userCode = localStorage.getItem('userCode')!;
 
     if (window.history.state['ap'] !== undefined) {
       this.ap = window.history.state['ap'];
@@ -73,15 +84,20 @@ export class BillsComponent implements OnInit {
         this.loadBills(this.ap.apartmentsCode);
       }
     }
-    this.userCode = localStorage.getItem('userCode')!;
+    
     if (this.userCode) {
       if (this.userRole === 'LOCATAR') {
         this.apartmentService.getApartmentsByUserCode(this.userCode).subscribe({
           next: (response) => {
-            console.log('Apartamente:', response);
-
             this.apartments = response.map((apt) => ({
-              label: apt.address_city + ',' + apt.address_street + ',' + apt.address_block,
+              label:
+                apt.administratorCode === 'CASA'
+                  ? apt.address_city + ', ' + apt.address_street
+                  : apt.address_city +
+                    ', ' +
+                    apt.address_street +
+                    ', ' +
+                    apt.address_block,
               value: apt.apartmentsCode,
             }));
           },
@@ -91,12 +107,18 @@ export class BillsComponent implements OnInit {
         });
       }
       if (this.userRole === 'ADMIN') {
+        this.getIndexes();
         this.apartmentService.getApartmentsByUserRole(this.userCode).subscribe({
           next: (response) => {
-            console.log('Apartamente:', response);
-
             this.apartments = response.map((apt) => ({
-              label: apt.address_city + ',' + apt.address_street + ',' + apt.address_block,
+              label:
+                apt.administratorCode === 'CASA'
+                  ? apt.address_city + ', ' + apt.address_street
+                  : apt.address_city +
+                    ', ' +
+                    apt.address_street +
+                    ', ' +
+                    apt.address_block,
               value: apt.apartmentsCode,
             }));
           },
@@ -130,8 +152,6 @@ export class BillsComponent implements OnInit {
     switch (status) {
       case 'ACHITAT':
         return 'success';
-      case 'SCADENT':
-        return 'warning';
       case 'NEACHITAT':
         return 'danger';
       case 'NEPLATIT':
@@ -142,6 +162,7 @@ export class BillsComponent implements OnInit {
 
   openModal() {
     this.displayModal = true;
+    console.log(this.selectedBill);
   }
 
   editBill(bill: any) {
@@ -187,13 +208,42 @@ export class BillsComponent implements OnInit {
   }
 
   deleteBill(id: any) {
-    this.billsService.deleteBill(id).subscribe((data) => {
-      this.reloadTable(true);
+    this.confirmationService.confirm({
+      message: 'Confirmați ștergerea facturii?',
+      header: 'Confirmare',
+      acceptIcon: 'none',
+      acceptLabel: 'Da',
+      rejectIcon: 'none',
+      rejectLabel: 'Nu',
+      rejectButtonStyleClass: 'p-button-text rejectButton',
+      acceptButtonStyleClass: 'addButton',
+      accept: () => {
+        this.billsService.deleteBill(id).subscribe((data) => {
+          this.reloadTable(true);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Confirmat',
+            detail: `Factura a fost ștearsă.`,
+          });
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Respins',
+          detail: 'Ai anulat ștergerea facturii.',
+          life: 3000,
+        });
+      },
     });
   }
 
   addIndex() {
     this.displayIndexModal = true;
+  }
+
+  getIndexes() {
+    this.indexesService.getIndexes().subscribe();
   }
 
   sendIndex() {
@@ -204,9 +254,61 @@ export class BillsComponent implements OnInit {
       apartmentsCode: this.apCode,
     };
 
-    this.billsService.addIndex(requestBody).subscribe((data) => {
+    this.indexesService.addIndex(requestBody).subscribe((data) => {
       this.displayIndexModal = false;
       (this.selectedType = ''), (this.newIndex = '');
+    });
+  }
+
+  changeStatus(bill: any) {
+    const formatStatus = (status: string) => {
+      const emoji = status === 'NEPLATIT' ? '🔴' : '🟢';
+      return `${emoji} ${status}`;
+    };
+
+    const newStatus = bill.status === 'NEPLATIT' ? 'ACHITAT' : 'NEPLATIT';
+    const message = `Doriți să modificați statusul facturii din ${formatStatus(
+      bill.status
+    )} în ${formatStatus(newStatus)}?`;
+
+    this.confirmationService.confirm({
+      message: message,
+      header: 'Confirmare',
+      acceptIcon: 'none',
+      acceptLabel: 'Da',
+      rejectIcon: 'none',
+      rejectLabel: 'Nu',
+      rejectButtonStyleClass: 'p-button-text rejectButton',
+      acceptButtonStyleClass: 'addButton',
+      accept: () => {
+        const formData = new FormData();
+        formData.append(
+          'bills',
+          JSON.stringify({
+            status: newStatus,
+          })
+        );
+
+        this.billsService.updateBill(bill.id, formData).subscribe({
+          next: () => {
+            this.reloadTable(true);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Confirmat',
+              detail: `Statusul facturii a fost schimbat în ${newStatus}.`,
+            });
+          },
+          error: (err) => console.error('Update bill error:', err),
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Respins',
+          detail: 'Ai anulat schimbarea statusului facturii.',
+          life: 3000,
+        });
+      },
     });
   }
 

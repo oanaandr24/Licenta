@@ -4,21 +4,19 @@
     <p-card [style]="{ width: '50em', 'margin-top': '4em' }">
       <div class="flex justify-content-between">
         <p-button
-          label="Apartamente"
+          label="Locuințe"
           [style]="{ width: '12em' }"
           (click)="goToApartments()"
         ></p-button>
         <div class="avatar-wrapper">
           <p-avatar icon="pi pi-user" shape="circle" size="xlarge"></p-avatar>
         </div>
-        <div *ngIf="userRole !== 'ADMIN'">
+        <div>
           <p-button
-            label="Statistici"
-            [style]="{ width: '12em' }"
-            (click)="goToStats()"
+            label="Logout"
+            (click)="logout()"
+            [style]="{ background: '#f45b69', 'border-color': '#f45b69', width: '12em' }"
           ></p-button>
-        </div>
-        <div *ngIf="userRole === 'ADMIN'" style="width: 12em;">
         </div>
       </div>
       <div class="flex justify-content-center">

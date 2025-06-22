@@ -1,24 +1,47 @@
 .apartamente {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 1em;
-    justify-content: start; 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: start;
 
-  }
-  
-  :host ::ng-deep {
-    .addButton {
+}
+
+:host ::ng-deep {
+  .addButton {
     background: #69827a;
     border: 1px solid #69827a;
-    }
-
-    .p-card {
-        border-radius: 5px;
-        box-shadow: 2px 2px 2px grey;
-        width: 30em;
-    }
-
-    .addButton {
-      margin-right: 0.5em;
-    }
   }
+
+  .editButton {
+    background: #e6b73c;
+    border: 1px solid #e6b73c;
+    width: 13em;
+  }
+  
+  .deleteButton {
+    background: #f45b69;
+    border: 1px solid #f45b69;
+    width: 13em;
+  }
+
+  .p-card {
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px grey;
+    width: 30.2em;
+    height: 13.5em;
+  }
+
+  .addButton {
+    margin-right: 0.5em;
+  }
+}
+
+:host ::ng-deep {
+        .p-toast .p-toast-message .p-toast-message-content .p-toast-icon-close {
+                border: 0px solid !important
+        }
+
+        .rejectButton {
+                color: #69827a
+        }
+}

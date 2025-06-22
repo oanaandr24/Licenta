@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../interfaces/user';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class UserService {
   private apiServerUrl = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient) {}
 
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiServerUrl}/user/all`);
@@ -22,8 +22,12 @@ export class UserService {
     return this.http.post<User>(`${this.apiServerUrl}/user/add`, user);
   }
 
-  public updateUser(user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiServerUrl}/user/update`, user);
+  public updateUserById(userId: any, user: any): Observable<User> {
+    return this.http.patch<User>(`${this.apiServerUrl}/user/patch/id/${userId}`, user);
+  }
+
+  public updateUserByEmail(user: User): Observable<User> {
+    return this.http.patch<User>(`${this.apiServerUrl}/user/update`, user);
   }
 
   public deleteUser(userId: number): Observable<void> {
@@ -31,15 +35,10 @@ export class UserService {
   }
 
   public register(user: User): Observable<User> {
-    return this.http.post<User>(`${this.apiServerUrl}/user/register`, user); 
+    return this.http.post<User>(`${this.apiServerUrl}/user/register`, user);
   }
 
   public login(user: User): Observable<User> {
     return this.http.post<User>(`${this.apiServerUrl}/user/login`, user);
   }
-
-  //public getUserApartments(userId: number): Observable<any[]> {
-  //  return this.http.get<any[]>(`${this.apiServerUrl}/apartments/user/${userId}`);
-  //}
-
 }

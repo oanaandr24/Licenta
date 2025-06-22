@@ -1,0 +1,125 @@
+<app-header></app-header>
+<div class="page-container">
+  <div class="flex justify-content-between align-items-center">
+    <h2>Indexuri</h2>
+  </div>
+  <p-card>
+    <div class="flex align-items-center gap-3">
+      <label
+        >Alege apartamentul pentru care dorești să vizualizezi secțiunea
+        <strong>Indexuri</strong></label
+      >
+      <p-dropdown
+        [options]="apartments"
+        [(ngModel)]="selectedAp"
+        placeholder="Alege apartamentul"
+        (ngModelChange)="onApSelection()"
+      ></p-dropdown>
+    </div>
+    <div *ngIf="indexes.length > 0">
+      <p-table
+        #dt1
+        [value]="indexes"
+        [paginator]="true"
+        [rows]="5"
+        responsiveLayout="scroll"
+        selectionMode="single"
+        [(selection)]="selectedIndex"
+        [globalFilterFields]="['type', 'value']"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-between">
+            <p>Vezi indexurile aferente apartamentului</p>
+            <div class="flex">
+              <p-iconField iconPosition="left" class="ml-auto">
+                <p-inputIcon>
+                  <i class="pi pi-search"></i>
+                </p-inputIcon>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="applyFilterGlobal($event, 'contains')"
+                  placeholder="Caută"
+                  style="width: 18.5em"
+                />
+              </p-iconField>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 10%" pSortableColumn="type">
+              Tip <p-sortIcon field="type"></p-sortIcon>
+            </th>
+            <th style="width: 10%" pSortableColumn="value">
+              Valoare <p-sortIcon field="paymentValue"></p-sortIcon>
+            </th>
+            <th style="width: 5%"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-index>
+          <tr [pSelectableRow]="index">
+            <td>{{ index.type }}</td>
+            <td>{{ index.value }}</td>
+            <td>
+              <p-button
+                type="button"
+                class="p-button-sm mr-1"
+                severity="warning"
+                (click)="generateBill(index)"
+                label="Generează factură"
+              >
+                <i class="pi pi-receipt"></i
+              ></p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="mt-3" *ngIf="showNoBillsMessage">
+      <strong>Nu există indexuri aferente acestui apartament. </strong>
+    </div>
+  </p-card>
+  <!-- 
+  <p-dialog
+    header="Adaugă index"
+    [(visible)]="displayIndexModal"
+    modal="true"
+    [closable]="true"
+    [style]="{ width: '25vw', heigth: '30em' }"
+    [draggable]="false"
+  >
+    <div class="flex flex-column align-items-start gap-3">
+      <span>Tipul Facturii:</span>
+      <p-dropdown
+        [options]="['apă', 'gaz', 'electricitate']"
+        [(ngModel)]="selectedType"
+        placeholder="Alege tipul facturii"
+        name="selectedType"
+        [style]="{ width: '21em' }"
+      ></p-dropdown>
+      <span>Index Nou:</span>
+      <input
+        style="width: 21em"
+        type="text"
+        pInputText
+        [(ngModel)]="newIndex"
+      />
+    </div>
+    <div class="flex align-items-end justify-content-end mt-3">
+      <p-button
+        label="Trimite index"
+        (click)="sendIndex()"
+        styleClass="addButton"
+      ></p-button>
+    </div>
+  </p-dialog>-->
+
+  <app-bills-modal
+    [displayModal]="displayModal"
+    (displayModalChange)="displayModal = $event"
+    (reloadTable)="reloadTable($event)"
+    [selectedBill]="selectedBill"
+    [apCode]="apCode"
+  ></app-bills-modal>
+</div>

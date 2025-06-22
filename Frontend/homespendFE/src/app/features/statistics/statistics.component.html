@@ -39,7 +39,7 @@
         <div class="flex align-items-center gap-4">
           <label>Factură: </label>
           <p-dropdown
-            [options]="['apa', 'gaz', 'electricitate']"
+            [options]="['apă', 'gaz', 'electricitate']"
             [(ngModel)]="selectedType"
             placeholder="Alege tipul facturii"
             name="selectedType"
@@ -51,7 +51,7 @@
           <p-calendar
             selectionMode="range"
             [(ngModel)]="selectedDates"
-            dateFormat="yy-mm-dd"
+            dateFormat="dd/mm/yy"
             name="selectedDates"
             [ngModelOptions]="{ standalone: true }"
           ></p-calendar>

@@ -7,6 +7,7 @@ import { ProfileComponent } from './features/profile/profile.component';
 import { StatisticsComponent } from './features/statistics/statistics.component';
 import { ApartmentsComponent } from './features/apartments/apartments.component';
 import { LayoutComponent } from './core/layout/layout.component';
+import { IndexesComponent } from './features/indexes/indexes/indexes.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'apartments', component: ApartmentsComponent },
       { path: 'bills', component: BillsComponent },
+      { path: 'indexes', component: IndexesComponent },
       { path: 'stats', component: StatisticsComponent },
       { path: 'profile', component: ProfileComponent },
     ],

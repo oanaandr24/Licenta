@@ -1,11 +1,11 @@
 <app-header></app-header>
 <div class="page-container">
   <div class="flex align-items-center justify-content-between">
-    <h2>Apartamente</h2>
+    <h2>Locuințe</h2>
     <div *ngIf="userRole !== 'ADMIN'">
       <p-button
         label="Adaugă casă"
-        [style]="{ width: '12em' }"
+        [style]="{ width: '12em', 'margin-right': '1em' }"
         (click)="addHouse()"
         styleClass="addButton"
       ></p-button>
@@ -13,7 +13,7 @@
     <div *ngIf="userRole === 'ADMIN'">
       <p-button
         label="Alocă apartament"
-        [style]="{ width: '12em' }"
+        [style]="{ width: '12em', 'margin-right': '1em' }"
         (click)="addApartmentToUser()"
         styleClass="addButton"
       ></p-button>
@@ -22,17 +22,17 @@
 
   <div *ngIf="apartments.length > 0; else noApartments" class="apartamente">
     <div *ngFor="let ap of apartments">
-      <div (click)="showBills(ap)">
+      <div>
         <p-card>
           <ng-template pTemplate="header" let-header>
             <div class="mt-3 ml-4 -mb-2">
               <i
-               style="font-size: 25px;"
+                style="font-size: 25px"
                 *ngIf="ap.administratorCode === 'CASA'"
                 class="pi pi-home"
               ></i>
-               <i
-                style="font-size: 25px;"
+              <i
+                style="font-size: 25px"
                 *ngIf="ap.administratorCode !== 'CASA'"
                 class="pi pi-building"
               ></i>
@@ -45,11 +45,58 @@
           <ng-template pTemplate="footer">
             <div class="flex gap-3 mt-1">
               <p-button
-                [label]="ap.administratorCode === 'CASA' ? 'Vezi casa' : 'Vezi apartament'"
+                label="Vezi facturi"
                 class="w-full"
                 styleClass="w-full"
                 styleClass="addButton"
+                (click)="showBills(ap)"
               />
+              <div class="flex flex-column gap-2">
+                <div *ngIf="ap.administratorCode === 'CASA'">
+                  <p-button
+                    label="Editează casa"
+                    class="w-full"
+                    styleClass="w-full"
+                    styleClass="editButton"
+                    (click)="openEditHouseModal(ap)"
+                  />
+                </div>
+                <div
+                  *ngIf="
+                    userRole === 'ADMIN' && ap.administratorCode !== 'CASA'
+                  "
+                >
+                  <p-button
+                    label="Editează apartament"
+                    class="w-full"
+                    styleClass="w-full"
+                    styleClass="editButton"
+                    (click)="openEditApartmentModal(ap)"
+                  />
+                </div>
+                <div *ngIf="ap.administratorCode === 'CASA'">
+                  <p-button
+                    label="Șterge casa"
+                    class="w-full"
+                    styleClass="w-full"
+                    styleClass="deleteButton"
+                    (click)="deleteHomeConfirm(ap)"
+                  />
+                </div>
+                <div
+                  *ngIf="
+                    userRole === 'ADMIN' && ap.administratorCode !== 'CASA'
+                  "
+                >
+                  <p-button
+                    label="Șterge apartament"
+                    class="w-full"
+                    styleClass="w-full"
+                    styleClass="deleteButton"
+                    (click)="deleteHomeConfirm(ap)"
+                  />
+                </div>
+              </div>
             </div>
           </ng-template>
         </p-card>
@@ -72,3 +119,36 @@
   (displayModalChange)="displayModalAddApartment = $event"
   (reloadTable)="reloadTable($event)"
 ></app-add-apartment-by-admin>
+
+<app-edit-house-modal
+  [displayModal]="displayEditHouse"
+  (displayModalChange)="displayModal = $event"
+  [houseData]="houseData"
+  (reloadTable)="reloadTable($event)"
+></app-edit-house-modal>
+
+<app-edit-apartment-by-admin
+  [displayModal]="displayEditApartment"
+  (displayModalChange)="displayModal = $event"
+  [apartmentData]="apartmentData"
+  (reloadTable)="reloadTable($event)"
+></app-edit-apartment-by-admin>
+
+
+  <p-toast
+    [showTransformOptions]="'translateY(100%)'"
+    [showTransitionOptions]="'1000ms'"
+    [hideTransitionOptions]="'1000ms'"
+    [showTransformOptions]="'translateX(100%)'"
+  />
+
+  <p-confirmDialog>
+    <ng-template pTemplate="message" let-message>
+      <div
+        class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border"
+      >
+        <i class="pi pi-exclamation-circle text-6xl text-primary-500"></i>
+        <p>{{ message.message }}</p>
+      </div>
+    </ng-template>
+  </p-confirmDialog>

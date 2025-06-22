@@ -22,15 +22,24 @@ export class MenuComponent {
 
     this.items = [
       {
-        label: 'Apartamente',
+        label: 'Locuințe',
         icon: 'pi pi-home',
         route: '/apartments',
       },
-       {
+      {
         label: 'Facturi',
-        icon: 'pi pi-file',
+        icon: 'pi pi-receipt',
         route: '/bills',
       },
+      ...(this.userRole === 'ADMIN'
+        ? [
+            {
+              label: 'Indexuri',
+        icon: 'pi pi-barcode',
+        route: '/indexes',
+            },
+          ]
+        : []),
       ...(this.userRole !== 'ADMIN'
         ? [
             {

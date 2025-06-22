@@ -78,10 +78,15 @@ export class StatisticsComponent {
     if (this.userCode) {
       this.apartmentService.getApartmentsByUserCode(this.userCode).subscribe({
         next: (response) => {
-          console.log('Apartamente:', response);
-
           this.apartments = response.map((apt) => ({
-            label: apt.apartmentsCode,
+            label:
+              apt.administratorCode === 'CASA'
+                ? apt.address_city + ', ' + apt.address_street
+                : apt.address_city +
+                  ', ' +
+                  apt.address_street +
+                  ', ' +
+                  apt.address_block,
             value: apt.apartmentsCode,
           }));
         },
@@ -122,12 +127,16 @@ export class StatisticsComponent {
 
     const now = new Date();
     const currentMonthBills = this.bills.filter((bill: any) => {
-      const date = new Date(bill.invoiceDate);
+      const date = this.parseDateFromString(bill.invoiceDate);
+      console.log('date', bill.invoiceDate, date);
       return (
+        date &&
         date.getMonth() === now.getMonth() &&
         date.getFullYear() === now.getFullYear()
       );
     });
+
+    console.log('current month', currentMonthBills);
 
     // Chart 1: by type (polar area)
     const groupedByType = currentMonthBills.reduce((acc: any, bill: any) => {
@@ -228,13 +237,20 @@ export class StatisticsComponent {
 
   applyFilters(): void {
     const [start, end] = this.selectedDates || [];
-    this.filteredBills = this.bills.filter(
-      (bill: any) =>
-        bill.status === 'ACHITAT' &&
-        (!this.selectedType || bill.type === this.selectedType) &&
-        (!start || new Date(bill.invoiceDate) >= start) &&
-        (!end || new Date(bill.invoiceDate) <= end)
-    );
+    this.filteredBills = this.bills.filter((bill: any) => {
+      if (bill.status !== 'ACHITAT') return false;
+      if (this.selectedType && bill.type !== this.selectedType) return false;
+
+      const invoiceDate = this.parseDateFromString(bill.invoiceDate);
+            console.log('bill', start, end, invoiceDate)
+
+      if (!invoiceDate) return false; // or handle how you want to treat invalid dates
+
+      if (start && invoiceDate < start) return false;
+      if (end && invoiceDate > end) return false;
+
+      return true;
+    });
 
     const grouped = this.filteredBills.reduce((acc: any, bill: any) => {
       acc[bill.invoiceDate] = (acc[bill.invoiceDate] || 0) + bill.paymentValue;
@@ -256,6 +272,19 @@ export class StatisticsComponent {
       ],
     };
     this.showChart = true;
+  }
+
+  private parseDateFromString(dateStr: string): Date | null {
+    if (!dateStr) return null;
+
+    const parts = dateStr.split('/');
+    if (parts.length !== 3) return null;
+
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // lunile sunt 0-based
+    const year = parseInt(parts[2], 10);
+
+    return new Date(year, month, day);
   }
 
   onChangeType() {

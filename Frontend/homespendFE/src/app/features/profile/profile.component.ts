@@ -90,12 +90,16 @@ export class ProfileComponent {
   toggleEdit() {
     if (this.isEditing) {
       if (this.profileForm.valid) {
-        const updatedUser: User = this.profileForm.value;
+        const updatedUser = {
+          name: this.profileForm.controls['name'].value,
+          email: this.profileForm.controls['email'].value,
+          phone: this.profileForm.controls['phone'].value
+        }
+        const userId = sessionStorage.getItem('id')
 
-        this.userService.updateUser(updatedUser).subscribe({
+        this.userService.updateUserById(userId, updatedUser).subscribe({
           next: (response) => {
             sessionStorage.setItem('name', this.profileForm.controls['name'].value)
-            console.log('User updated:', response);
             this.profileForm.disable();
             this.isEditing = false;
             this.messageService.add({
@@ -103,6 +107,7 @@ export class ProfileComponent {
               summary: 'Succes',
               detail: 'Profilul a fost actualizat!',
             });
+            window.location.reload();
           },
           error: (err) => {
             console.error('Failed to update user:', err);
@@ -124,8 +129,8 @@ export class ProfileComponent {
     this.router.navigate(['apartments']);
   }
 
-  goToStats() {
-    this.router.navigate(['stats'])
+  logout() {
+    this.router.navigate(['login'])
   }
 
   onBack() {

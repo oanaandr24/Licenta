@@ -29,9 +29,23 @@ export class ApartmentService {
     );
   }
 
-    addApartmentByAdmin(email: string, apartment: any): Observable<Apartments[]> {
+  addApartmentByAdmin(email: string, apartment: any): Observable<Apartments[]> {
     return this.http.post<Apartments[]>(
-      `${this.apiServerUrl}/apartments/add/${email}`, apartment
+      `${this.apiServerUrl}/apartments/add/${email}`,
+      apartment
+    );
+  }
+
+  editHouse(id: any, house: any): Observable<Apartments[]> {
+    return this.http.patch<Apartments[]>(
+      `${this.apiServerUrl}/apartments/patch/id/${id}`,
+      house
+    );
+  }
+
+  deletHome(homeCode: any): Observable<Apartments[]> {
+    return this.http.delete<Apartments[]>(
+      `${this.apiServerUrl}/apartments/delete/${homeCode}`
     );
   }
 }

@@ -53,10 +53,7 @@
       >
         <ng-template pTemplate="caption">
           <div class="flex justify-content-between">
-            <p>
-              Vezi facturile aferente apartamentului
-              <strong>{{ apCode }}</strong>
-            </p>
+            <p>Vezi facturile aferente apartamentului</p>
             <div class="flex">
               <p-iconField iconPosition="left" class="ml-auto">
                 <p-inputIcon>
@@ -110,7 +107,11 @@
                 type="button"
                 class="p-button-sm"
                 [outlined]="true"
-                [style]="{ width: '11em' }"
+                [style]="{
+                  width: '11em',
+                  color: '#69827a',
+                  'border-color': '#69827a'
+                }"
                 (click)="
                   downloadPdf(bill.pdfFile, 'factura_' + bill.number + '.pdf')
                 "
@@ -120,22 +121,40 @@
               <span *ngIf="!bill.pdfFile">N/A</span>
             </td>
             <td>
-              <p-button
-                type="button"
-                class="p-button-sm mr-1"
-                severity="warning"
-                (click)="editBill(bill)"
-              >
-                <i class="pi pi-file-edit"></i
-              ></p-button>
-              <p-button
-                type="button"
-                class="p-button-sm"
-                severity="danger"
-                (click)="deleteBill(bill.id)"
-              >
-                <i class="pi pi-trash"></i
-              ></p-button>
+              <div class="flex align-items-center justify-content-end gap-2">
+                <p-button
+                  type="button"
+                  class="p-button-sm mr-1"
+                  [style]="{ background: '#e6b73c', 'border-color': '#e6b73c' }"
+                  (click)="editBill(bill)"
+                >
+                  <i class="pi pi-file-edit"></i
+                ></p-button>
+                <p-button
+                  type="button"
+                  class="p-button-sm"
+                  (click)="deleteBill(bill.id)"
+                  [style]="{ background: '#f45b69', 'border-color': '#f45b69' }"
+                >
+                  <i class="pi pi-trash"></i
+                ></p-button>
+                <div *ngIf="userRole !== 'ADMIN'">
+                  <p-button
+                    type="button"
+                    class="p-button-sm"
+                    severity="info"
+                    (click)="changeStatus(bill)"
+                    label="Schimbă status"
+                    [style]="{
+                      width: '11em',
+                      background: '#4ea8a1	',
+                      'border-color': '#4ea8a1	'
+                    }"
+                  >
+                    <i class="pi pi-sliders-h mr-2"></i
+                  ></p-button>
+                </div>
+              </div>
             </td>
           </tr>
         </ng-template>
@@ -187,4 +206,22 @@
     [selectedBill]="selectedBill"
     [apCode]="apCode"
   ></app-bills-modal>
+
+  <p-toast
+    [showTransformOptions]="'translateY(100%)'"
+    [showTransitionOptions]="'1000ms'"
+    [hideTransitionOptions]="'1000ms'"
+    [showTransformOptions]="'translateX(100%)'"
+  />
+
+  <p-confirmDialog>
+    <ng-template pTemplate="message" let-message>
+      <div
+        class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border"
+      >
+        <i class="pi pi-exclamation-circle text-6xl text-primary-500"></i>
+        <p>{{ message.message }}</p>
+      </div>
+    </ng-template>
+  </p-confirmDialog>
 </div>

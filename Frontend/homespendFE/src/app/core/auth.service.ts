@@ -21,6 +21,20 @@ export class AuthService {
     return this.isAuthenticatedValue || !!localStorage.getItem('authToken');
   }
 
+  getUserRoleAsync(): Promise<string> {
+    return new Promise((resolve) => {
+      const checkRole = () => {
+        const role = sessionStorage.getItem('role');
+        if (role) {
+          resolve(role);
+        } else {
+          setTimeout(checkRole, 100); // Reîncearcă la fiecare 100ms
+        }
+      };
+      checkRole();
+    });
+  }
+
   logout(): void {
     this.setAuthenticated(false);
   }

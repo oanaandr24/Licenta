@@ -37,13 +37,13 @@
             formControlName="type"
             placeholder="Alege tipul facturii"
             name="selectedType"
-            [editable]="isEditing === false ? true : false"
+            [editable]="true"
             [style]="{ width: '19em' }"
             (onChange)="checkType($event)"
           ></p-dropdown>
         </div>
         <div class="flex flex-column">
-          <span>Provider:</span>
+          <span>Furnizor:</span>
           <input
             style="width: 19em"
             type="text"
@@ -54,7 +54,7 @@
       </div>
       <span>Număr:</span>
       <input class="-mt-3" type="email" pInputText formControlName="number" />
-      <div *ngIf="shouldShowIndexes || this.isEditing " class="flex align-items-center gap-6">
+      <div *ngIf="shouldShowIndexes" class="flex align-items-center gap-6">
         <div class="flex flex-column">
           <span>Index Vechi:</span>
           <input
@@ -74,13 +74,15 @@
           />
         </div>
       </div>
-      <span>Consum:</span>
-      <input
-        class="-mt-3"
-        type="text"
-        pInputText
-        formControlName="amountConsumed"
-      />
+      <div *ngIf="shouldShowIndexes">
+        <span>Consum:</span>
+        <input
+          class="-mt-3"
+          type="text"
+          pInputText
+          formControlName="amountConsumed"
+        />
+      </div>
       <div class="flex align-items-center gap-6">
         <div class="flex flex-column">
           <span>Dată factură:</span>

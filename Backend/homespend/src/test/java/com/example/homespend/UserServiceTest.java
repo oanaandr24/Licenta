@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,7 +57,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUserById_UpdatesFields() {
+    void testUpdateUserById_UpdatesFields() throws NoSuchAlgorithmException {
         Long id = 1L;
         User existingUser = new User();
         existingUser.setId(id);

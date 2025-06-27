@@ -47,13 +47,13 @@ public class UserResource {
     }
 
     @PatchMapping("/patch/id/{id}")
-    public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user) throws NoSuchAlgorithmException {
         User updateUser = userService.updateUserById(id, user);
         return new ResponseEntity<>(updateUser, HttpStatus.OK);
     }
 
     @PatchMapping("/patch/email/{email}")
-    public ResponseEntity<User> updateUserByEmail(@PathVariable String email, @RequestBody User user) {
+    public ResponseEntity<User> updateUserByEmail(@PathVariable String email, @RequestBody User user) throws NoSuchAlgorithmException {
         User updateUser = userService.updateUserByEmail(email, user);
         return new ResponseEntity<>(updateUser, HttpStatus.OK);
     }

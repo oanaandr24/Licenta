@@ -7,10 +7,9 @@ import { AvatarModule } from 'primeng/avatar';
 import {
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { User } from '../../utils/interfaces/user';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -28,7 +27,7 @@ import { AuthService } from 'src/app/core/auth.service';
     ReactiveFormsModule,
     InputTextModule,
     ToastModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [MessageService],
   templateUrl: './profile.component.html',
@@ -37,12 +36,11 @@ import { AuthService } from 'src/app/core/auth.service';
 export class ProfileComponent {
   profileForm!: FormGroup;
 
-  username: any = '';
+  username: string = '';
   userId: any = 0;
-  role: any = '';
-
+  role: string = '';
+  userRole: string = '';
   isEditing = false;
-  userRole: any = ''
 
   constructor(
     private router: Router,
@@ -54,9 +52,10 @@ export class ProfileComponent {
     this.profileForm = this.fb.group({
       id: [{ value: '', disabled: true }],
       name: [{ value: '', disabled: true }, Validators.required],
-      email: [{ value: '', disabled: true }, [Validators.required, Validators.email],],
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       phone: [{ value: '', disabled: true }, Validators.required],
       password: [{ value: '', disabled: true }],
+      confirmPassword: [{ value: '', disabled: true }],
       role: [{ value: '', disabled: true }],
       userCode: [{ value: '', disabled: true }],
     });
@@ -64,7 +63,7 @@ export class ProfileComponent {
 
   ngOnInit() {
     this.userId = sessionStorage.getItem('id');
-    this.userRole = sessionStorage.getItem('role')
+    this.userRole = sessionStorage.getItem('role') ?? '';
     this.getUserData();
   }
 
@@ -79,12 +78,21 @@ export class ProfileComponent {
           name: data['name'],
           email: data['email'],
           phone: data['phone'],
-          password: data['password'],
+          password: '',
+          confirmPassword: '',
           role: data['role'],
           userCode: data['userCode'],
         };
 
         this.profileForm.patchValue(userData);
+      },
+      error: (err) => {
+        console.error('Eroare la preluarea datelor utilizatorului:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-au putut încărca datele utilizatorului.',
+        });
       },
     });
   }
@@ -92,27 +100,58 @@ export class ProfileComponent {
   toggleEdit() {
     if (this.isEditing) {
       if (this.profileForm.valid) {
-        const updatedUser = {
+        const password = this.profileForm.controls['password'].value;
+        const confirmPassword = this.profileForm.controls['confirmPassword'].value;
+
+        if (password || confirmPassword) {
+          if (password !== confirmPassword) {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Parolele nu coincid',
+              detail: 'Câmpurile Parola Nouă și Rescrie Parola trebuie să fie identice.',
+            });
+            return;
+          }
+
+          const passwordValid = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/.test(password);
+          if (!passwordValid) {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Parolă invalidă',
+              detail: 'Parola trebuie să aibă cel puțin 6 caractere, o literă mică și o literă mare.',
+            });
+            return;
+          }
+        }
+
+        const updatedUser: any = {
           name: this.profileForm.controls['name'].value,
           email: this.profileForm.controls['email'].value,
-          phone: this.profileForm.controls['phone'].value
-        }
-        const userId = sessionStorage.getItem('id')
+          phone: this.profileForm.controls['phone'].value,
+        };
 
-        this.userService.updateUserById(userId, updatedUser).subscribe({
-          next: (response) => {
-            sessionStorage.setItem('name', this.profileForm.controls['name'].value)
+        if (password && password.trim() !== '') {
+          updatedUser.password = password;
+        }
+
+        this.userService.updateUserById(this.userId, updatedUser).subscribe({
+          next: () => {
+            sessionStorage.setItem('name', updatedUser.name);
             this.profileForm.disable();
             this.isEditing = false;
+            this.profileForm.controls['password'].setValue('');
+            this.profileForm.controls['confirmPassword'].setValue('');
+
             this.messageService.add({
               severity: 'success',
               summary: 'Succes',
               detail: 'Profilul a fost actualizat!',
             });
+
             window.location.reload();
           },
           error: (err) => {
-            console.error('Failed to update user:', err);
+            console.error('Actualizarea profilului a eșuat:', err);
             this.messageService.add({
               severity: 'error',
               summary: 'Eroare',
@@ -124,6 +163,8 @@ export class ProfileComponent {
     } else {
       this.profileForm.enable();
       this.isEditing = true;
+      this.profileForm.controls['password'].setValue('');
+      this.profileForm.controls['confirmPassword'].setValue('');
     }
   }
 
@@ -132,8 +173,8 @@ export class ProfileComponent {
   }
 
   logout() {
-    this.authService.logout()
-    this.router.navigate(['login'])
+    this.authService.logout();
+    this.router.navigate(['login']);
   }
 
   onBack() {

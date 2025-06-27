@@ -19,6 +19,7 @@
           ></p-button>
         </div>
       </div>
+
       <div class="flex justify-content-center">
         <p>{{ role }}</p>
       </div>
@@ -27,14 +28,24 @@
         <div class="flex flex-column justify-content-center gap-3">
           <span>Nume:</span>
           <input type="text" pInputText formControlName="name" />
+
           <span>Email:</span>
           <input type="email" pInputText formControlName="email" />
+
           <span>Telefon:</span>
           <input type="text" pInputText formControlName="phone" />
+
+          <span>Parola Nouă:</span>
+          <input type="password" pInputText formControlName="password" />
+
+          <span>Rescrie Parola Nouă:</span>
+          <input type="password" pInputText formControlName="confirmPassword" />
+
           <div class="flex justify-content-center">
             <p-button
               [label]="isEditing ? 'Salvează' : 'Editează'"
               (click)="toggleEdit()"
+              [disabled]="isEditing && !profileForm.valid"
             ></p-button>
           </div>
         </div>

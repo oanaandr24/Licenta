@@ -46,7 +46,7 @@ export class BillsModalComponent {
   uploadedFileName: string | null = null;
   billsForm!: FormGroup;
   isEditing: boolean = false;
-  shouldShowIndexes: boolean = false;
+  shouldShowIndexes: boolean = true;
 
   constructor(private fb: FormBuilder, private billsService: BillsService) {
     this.billsForm = this.fb.group({
@@ -68,6 +68,7 @@ export class BillsModalComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['displayModal'] && this.displayModal) {
+      this.shouldShowIndexes = true;
       if (this.selectedBill) {
         this.isEditing = true;
         this.billsForm.patchValue({

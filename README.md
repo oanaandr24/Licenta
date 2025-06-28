@@ -14,7 +14,7 @@
 
 ## ▶️ Pași de rulare
 
-### 1. Crearea bazei de date "licenta" - recomandat MySQLWorkbench
+### 1. Crearea bazei de date "licenta"
 ### 2. Rularea aplicației Java Spring în IntelliJ Idea
 ### 3. Rularea comenzii "ng serve" în Visual Studio Code
 ### 4. Accesarea URL-ului primit în consola din Visual Studio Code - aplicația ruleaza
